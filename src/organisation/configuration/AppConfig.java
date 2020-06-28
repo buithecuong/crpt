@@ -39,10 +39,10 @@ public class AppConfig {
 	@Bean
 	DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("oracle.jdbc.OracleDriver");
-		dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
-		dataSource.setUsername("java");
-		dataSource.setPassword("java");
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/test");
+		dataSource.setUsername("root");
+		dataSource.setPassword("rozan123");
 		return dataSource;
 	}
 
@@ -68,7 +68,7 @@ public class AppConfig {
 		sessionBuilder.addAnnotatedClasses(Employee.class);
 		sessionBuilder.setProperty("hibernate.show_sql", "true");
 		sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "update");
-		sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+		sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		return sessionBuilder.buildSessionFactory();
 
 	}
