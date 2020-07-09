@@ -64,35 +64,6 @@ public class EmployeeController {
 
 		boolean error = false;
 		String s = String.valueOf(employee.getId());
-		if (!s.matches("[0-9]+") && employee.getId() == 0) {
-			result.rejectValue("id", "user.id.empty");
-			error = true;
-		}
-
-		if (employee.getName().isEmpty()) {
-			result.rejectValue("name", "user.name.empty");
-			error = true;
-		}
-
-		if (employee.getUsername().isEmpty()) {
-			result.rejectValue("username", "user.username.empty");
-			error = true;
-		}
-
-		if (employee.getPassword().isEmpty()) {
-			result.rejectValue("password", "user.password.empty");
-			error = true;
-		}
-
-		if (employee.getTeam().isEmpty()) {
-			result.rejectValue("team", "user.team.empty");
-			error = true;
-		}
-		
-		if (employee.getStatus().isEmpty()) {
-			result.rejectValue("status", "user.status.empty");
-			error = true;
-		}
 		
 		ModelAndView mav = null;
 
