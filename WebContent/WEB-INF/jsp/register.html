@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<link rel="stylesheet" href="../static/css/register_style.css" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+<link href="https://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+
+<div class="testbox">
+  <h1>CRPT Registration</h1>
+
+  <form action="/">
+      <hr>
+    <div class="accounttype">
+      <input type="radio" value="None" id="radioOne" name="account" checked/>
+      <label for="radioOne" class="radio" chec>Personal</label>
+      <input type="radio" value="None" id="radioTwo" name="account" />
+      <label for="radioTwo" class="radio">Company</label>
+    </div>
+  <hr>
+  <label id="icon" for="name"><i class="icon-envelope "></i></label>
+  <input type="text" name="name" id="name" placeholder="Email" required/>
+  <label id="icon" for="name"><i class="icon-user"></i></label>
+  <input type="text" name="name" id="name" placeholder="Name" required/>
+  <div>
+  <label id="icon" for="name"><i class="icon-shield"></i></label>
+  <input type="password" name="name" id="name" placeholder="Password" required/>
+  <label id="icon" for="name"><i class="icon-shield"></i></label>
+  <input type="password" id="name" placeholder="Repeat Password" name="psw-repeat" required/>
+  </div>
+  <div class="role">
+    <input type="radio" value="None" id="admin" name="role" checked/>
+    <label for="admin" class="radio" chec>Admin</label>
+    <input type="radio" value="None" id="user" name="role" />
+    <label for="user" class="radio">User</label>
+   </div> 
+   <p>By clicking Register, you agree on our <a href="#">terms and condition</a>.</p>
+   <label>
+        <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
+      </label>
+<div>    
+<a href="login.html" class="button">Login</a>
+</div>
+   <div> 
+   <input type="submit" class="btn btn-primary btn-large btn-block" value="Register">
+   </div>
+   
+  </form>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>
