@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,7 +27,7 @@ import organisation.model.Employee;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "organisation.*")
-
+@EntityScan( basePackages = {"organisation.model"} )
 public class AppConfig {
 
 	
@@ -40,9 +41,9 @@ public class AppConfig {
 	DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/test");
 		dataSource.setUsername("root");
 		dataSource.setPassword("rozan123");
+		dataSource.setPassword("Root@12345");
 		return dataSource;
 	}
 
@@ -68,7 +69,7 @@ public class AppConfig {
 		sessionBuilder.addAnnotatedClasses(Employee.class);
 		sessionBuilder.setProperty("hibernate.show_sql", "true");
 		sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "update");
-		sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		return sessionBuilder.buildSessionFactory();
 
 	}
