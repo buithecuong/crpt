@@ -5,8 +5,6 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +34,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<Employee> getList() {
 		return employeeDao.getAllEmployees();
 	}
+	
+	
+	@Transactional
+	@Override
+	public List<Employee> getTimeSheetList() {
+		return employeeDao.getAllTimeSheets();
+	}
 
 	@Transactional
 	@Override
@@ -56,14 +61,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public ModelAndView validateEmployee(Employee employee,HttpServletRequest request, HttpSession session) {
-		
-		
+	public ModelAndView validateEmployee(Employee employee, HttpServletRequest request, HttpSession session) {
+
 		Employee emp = employeeDao.validateUserDao(employee);
-		
-		
+
 		ModelAndView mav = null;
-	     //Employee is User or Admin
+		// Employee is User or Admin
 		if (null != emp) {
 			if (emp.getStatus().equals("admin")) {
 				mav = new ModelAndView("adminIntro");
@@ -113,4 +116,3 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 }
-

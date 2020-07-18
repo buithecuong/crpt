@@ -45,8 +45,10 @@ body {
 	
 <br><br><br>v
 	<center>
-		<a href="welcome">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-			href="logout">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<a href="welcome">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="logout">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<a href="datepicker">Daily Timesheet</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
 		
 	</center>
 </body>
