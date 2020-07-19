@@ -17,4 +17,6 @@ public interface EmployeeDao {
 	public int updateEmp(Employee employee);
 
 	public Employee validateUserDao(Employee employee);
+
+	List<Employee> getAllTimeSheets();
 }

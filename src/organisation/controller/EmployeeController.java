@@ -1,5 +1,6 @@
 package organisation.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,20 +20,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
-
+import organisation.model.TimeSheet;
+import organisation.model.TimeSheetForm;
 
 @Controller
 public class EmployeeController {
 
+	private static List<TimeSheet> TSrecords = new ArrayList<TimeSheet>();
+	
 	@Autowired
 	private EmployeeService empService;
 
-	
-
 	@RequestMapping("/")
-	public ModelAndView welcome(HttpServletRequest request,
-			HttpServletResponse response, HttpSession session) {
-		    return new ModelAndView("welcome");
+	public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		return new ModelAndView("welcome");
 	}
 
 	@RequestMapping(value = "welcome")
@@ -49,28 +48,22 @@ public class EmployeeController {
 		return mav;
 	}
 
-	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String displayLogin(Model model) {
 		model.addAttribute("employee", new Employee());
 		return "register";
 	}
 
-	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST) //validating new employee
-	public ModelAndView addUser(HttpServletRequest request,
-			HttpServletResponse response,
-			@ModelAttribute("employee") Employee employee,
-			BindingResult result, SessionStatus status) {
+	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST) // validating new employee
+	public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("employee") Employee employee, BindingResult result, SessionStatus status) {
 
 		boolean error = false;
-		String s = String.valueOf(employee.getId());
-		
 		ModelAndView mav = null;
 
 		if (error) {
 
 			mav = new ModelAndView("register");
-			mav.addObject("message", "Enter Complete and Valid Information");
 			mav.addObject("employee", new Employee());
 			return mav;
 		}
@@ -81,31 +74,27 @@ public class EmployeeController {
 		return new ModelAndView("intro", "name", employee.getName());
 	}
 
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)  // Session Check
-	public ModelAndView userProfile(HttpServletRequest request,
-			HttpSession session, HttpServletResponse response, Employee employee) {
+	@RequestMapping(value = "/profile", method = RequestMethod.GET) // Session Check
+	public ModelAndView userProfile(HttpServletRequest request, HttpSession session, HttpServletResponse response,
+			Employee employee) {
 		session = request.getSession(false);
-		return empService.checkSession(employee,session);
-		 
+		return empService.checkSession(employee, session);
 
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public ModelAndView showLogin(HttpServletRequest request,
-			HttpServletResponse response, HttpSession session,
+	public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@ModelAttribute("employee") Employee employee) {
-		ModelAndView mav = new ModelAndView("login");
-		mav.addObject("employee", new Employee());
-		return mav;
+		session = request.getSession(false);
+		return empService.checkSession(employee, session);
 	}
 
-	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)  // Existing employee validation
-	public ModelAndView loginProcess(HttpServletRequest request,
-			HttpServletResponse response,HttpSession session,
+	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST) // Existing employee validation
+	public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@ModelAttribute("employee") Employee employee) {
-		            session = request.getSession();
-		return empService.validateEmployee(employee,request,session);
-		
+		session = request.getSession();
+		return empService.validateEmployee(employee, request, session);
+
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -116,35 +105,31 @@ public class EmployeeController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView getUserDetails(HttpServletRequest request,HttpSession session,
-			ModelMap userModel,@ModelAttribute("employee") Employee employee) {
+	public ModelAndView getUserDetails(HttpServletRequest request, HttpSession session, ModelMap userModel,
+			@ModelAttribute("employee") Employee employee) {
 		int employeeId = Integer.parseInt(request.getParameter("id"));
 		session = request.getSession(true);
-		employee =empService.getUserDetails(employeeId);
-		userModel.addAttribute("employee",employee);
+		employee = empService.getUserDetails(employeeId);
+		userModel.addAttribute("employee", employee);
 		return new ModelAndView("edit");
 	}
 
 	@RequestMapping(value = "/updateSave", method = RequestMethod.POST)
-	public ModelAndView updateUser(HttpServletRequest request,HttpSession session,
-			HttpServletResponse response,
+	public ModelAndView updateUser(HttpServletRequest request, HttpSession session, HttpServletResponse response,
 			@ModelAttribute("employee") Employee employee) {
-			empService.updateEmployee(employee);
-		    return new ModelAndView("adminIntro");
+		empService.updateEmployee(employee);
+		return new ModelAndView("adminIntro");
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView deleteUser(HttpServletRequest request,
-			ModelMap userModel) {
+	public ModelAndView deleteUser(HttpServletRequest request, ModelMap userModel) {
 		int employeeId = Integer.parseInt(request.getParameter("id"));
 		int resp = empService.deleteUserDetails(employeeId);
 		userModel.addAttribute("userDetails", empService.getList());
 		if (resp > 0) {
-			userModel.addAttribute("msg", "User with id : " + employeeId
-					+ " deleted successfully.");
+			userModel.addAttribute("msg", "User with id : " + employeeId + " deleted successfully.");
 		} else {
-			userModel.addAttribute("msg", "User with id : " + employeeId
-					+ " deletion failed.");
+			userModel.addAttribute("msg", "User with id : " + employeeId + " deletion failed.");
 		}
 		return new ModelAndView("adminIntro");
 	}
@@ -155,5 +140,37 @@ public class EmployeeController {
 		return "redirect:login";
 	}
 
-}
+	@RequestMapping(value = "/datepicker", method = RequestMethod.GET)
+	public ModelAndView datepicker(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			 Employee employee) {
 
+		return new ModelAndView("DatePicker");
+	}
+	
+	@RequestMapping(value = "/dailyTimesheet", method = RequestMethod.GET)
+	public ModelAndView dailytimesheet(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			 Employee employee) {
+
+		return new ModelAndView("timesheet");
+	}
+	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public ModelAndView save(@ModelAttribute("timeSheetForm") TimeSheetForm TSForm) {
+		System.out.println(TSForm);
+		System.out.println(TSForm.getTimesheetRecords());
+		List<TimeSheet> records = TSForm.getTimesheetRecords();
+		
+		if(null != records && records.size() > 0) {
+			EmployeeController.TSrecords = records;
+			for (TimeSheet record : TSrecords) {
+				System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
+			}
+		}
+		
+		List<Employee> timeSheetList = empService.getTimeSheetList();
+		
+		return new ModelAndView("showContact", "timeSheetList", timeSheetList);
+	
+	}
+
+}

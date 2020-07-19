@@ -55,6 +55,18 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		session.close();
 		return employeeList;
 	}
+	
+	
+	@Override
+	public List<Employee> getAllTimeSheets() {
+		Session session = sessionFactory.openSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Employee> timeSheetList = session.createQuery("from timeSheet order by srNO").list();
+		
+		session.close();
+		return timeSheetList;
+	}
 
 	@Override
 	public Employee getUserDetails(int id) {

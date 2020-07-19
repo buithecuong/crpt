@@ -7,12 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
- <form action="timesheet.jsp">
+ <form action="dailyTimesheet">
     <label>Choose Day</label>
     
     <input type="date" name="day" id="datepicker"/>
     
-    <input type="submit" value="Login" />
+    <input type="submit" value="Next" />
   </form>
 </body>
 </html>

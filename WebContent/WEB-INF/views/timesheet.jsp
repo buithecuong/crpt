@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,11 +30,14 @@ form {
 
 input[type=text] {
 	width: 100%;
-	margin: 8px 0;
-	padding: 12px 20px;
 	display: inline-block;
-	border: 2px solid green;
 	box-sizing: border-box;
+}
+
+td {
+	margin: 8px 0;
+	
+	
 }
 
 button:hover {
@@ -49,119 +54,111 @@ table {
 }
 </style>
 <SCRIPT language="javascript">
+	var tableRowCount = null;
 
+	function addRow(tableID) {
 
-		var tableRowCount=null;
+		var table = document.getElementById(tableID);
 
+		var rowCount = table.rows.length;
+		var row = table.insertRow(rowCount);
 
-		function addRow(tableID) {
+		var cell1 = row.insertCell(0);
+		var element1 = document.createElement("input");
+		element1.type = "checkbox";
+		element1.name = "chkbox[]";
+		cell1.appendChild(element1);
 
-			var table = document.getElementById(tableID);
+		/* var cell2 = row.insertCell(1);
+		cell2.innerHTML = rowCount; */
 
-			var rowCount = table.rows.length;
-			var row = table.insertRow(rowCount);
+		var cell3 = row.insertCell(1);
+		var element3 = document.createElement("input");
+		element3.type = "text";
+		element3.name = "txtbox[]";
+		cell3.appendChild(element3);
 
-			var cell1 = row.insertCell(0);
-			var element1 = document.createElement("input");
-			element1.type = "checkbox";
-			element1.name="chkbox[]";
-			cell1.appendChild(element1);
-			
-			var cell2 = row.insertCell(1);
-			cell2.innerHTML = rowCount ;
+		var cell4 = row.insertCell(2);
+		var element4 = document.createElement("input");
+		element4.type = "text";
+		element4.name = "txtbox[]";
+		cell4.appendChild(element4);
 
-			var cell3 = row.insertCell(2);
-			var element3 = document.createElement("input");
-			element3.type = "text";
-			element3.name = "txtbox[]";
-			cell3.appendChild(element3);
+		var cell5 = row.insertCell(3);
+		var element5 = document.createElement("input");
+		element5.type = "text";
+		element5.name = "txtbox[]";
+		cell5.appendChild(element5);
 
-			var cell4 = row.insertCell(3);
-			var element4 = document.createElement("input");
-			element4.type = "text";
-			element4.name = "txtbox[]";
-			cell4.appendChild(element4);
-			
-			var cell5 = row.insertCell(4);
-			var element5 = document.createElement("input");
-			element5.type = "text";
-			element5.name = "txtbox[]";
-			cell5.appendChild(element5);
-			
-			tableRowCount = table.rows.length
-			
+		tableRowCount = table.rows.length
 
-		}
+	}
 
-		function deleteRow(tableID) {
-			try {
+	function deleteRow(tableID) {
+		try {
 			var table = document.getElementById(tableID);
 			var rowCount = table.rows.length;
 
-			for(var i=0; i<rowCount; i++) {
+			for (var i = 0; i < rowCount; i++) {
 				var row = table.rows[i];
 				var chkbox = row.cells[0].childNodes[0];
-				if(null != chkbox && true == chkbox.checked) {
+				if (null != chkbox && true == chkbox.checked) {
 					table.deleteRow(i);
 					rowCount--;
 					i--;
 				}
+			}
+			tableRowCount = table.rows.length
 
-				tableRowCount = table.rows.length
-			}
-			}catch(e) {
-				alert(e);
-			}
+		} catch (e) {
+			alert(e);
 		}
-
-	</SCRIPT>
+	}
+</SCRIPT>
 <body>
 
-	<form action="timesheetdao.jsp">
 
-		<%   
-	 out.println("The timesheet for the day " + request.getParameter("day"));
-	 
-	 
-	 %><br />
-		<INPUT type="button" value="Add Row" onclick="addRow('dataTable')" />
 
-		<INPUT type="button" value="Delete Row"
+	<form:form name="regForm" method="post" action="save" modelAttribute="timeSheetForm">
+
+		<%
+			out.println("The timesheet for the day " + request.getParameter("day"));
+		%><br />
+
+		<input type="button" value="Add Row" onclick="addRow('dataTable')" />
+
+		<input type="button" value="Delete Row"
 			onclick="deleteRow('dataTable')" />
 
-		
-
-
-		<TABLE id="dataTable" width="350px" border="1">
+		<table id="dataTable" width="350px" border="1">
 			<tr>
 				<th></th>
-				<th>Sr_No</th>
 				<th>Job_Title</th>
 				<th>Hours</th>
 				<th>Status</th>
 			</tr>
-			<TR>
-				<TD><INPUT type="checkbox" name="chk" /></TD>
-				<TD><INPUT name="Sr_No"></TD>
-				<TD><INPUT name="Job_Title"></TD>
-				<TD><INPUT name="Hours"></TD>
-				<TD><INPUT name="Status"></TD>
+			<c:forEach items="${timeSheetForm.timeSheetRecords}" var="timeSheet">
+				<tr>
+					<td><input type="checkbox" name="chk" /></td>
+					<td><input name="timeSheet[${counter.index}].jobTitle"
+						value="${timeSheet.jobTitle}" /></td>
+					<td><input name="timeSheet[${counter.index}].hours"
+						value="${timeSheet.hours}" /></td>
+					<td><input name="timeSheet[${counter.index}].status"
+						value="${timeSheet.status}" /></td>
+				</tr>
+			</c:forEach>
+			
+		</table>
+		<br />
+		<input type="submit" value="Save" />
+	</form:form>
 
 
-			</TR>
 
 
-		</TABLE>
-		
-		<%   
-	 out.println("The timesheet for the day " + request.getParameter("day"));
-	 request.setAttribute("RowCount", request.getParameter("tableRowCount"));
-	 
-	 %>
-		
-		<input type="submit" value="Send"  />
 
-	</form>
+
 
 </body>
 </html>

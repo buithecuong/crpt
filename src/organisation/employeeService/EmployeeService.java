@@ -25,4 +25,6 @@ public interface EmployeeService {
 
 	public ModelAndView checkSession(Employee employee, HttpSession session);
 
+	List<Employee> getTimeSheetList();
+
 }
