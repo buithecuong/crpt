@@ -24,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import organisation.model.Employee;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @EnableWebMvc
 @Configuration
