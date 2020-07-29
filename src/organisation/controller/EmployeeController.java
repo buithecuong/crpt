@@ -20,13 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
-import organisation.model.TimeSheet;
+import organisation.model.TimeSheet1;
 import organisation.model.TimeSheetForm;
 
 @Controller
 public class EmployeeController {
 
-	private static List<TimeSheet> TSrecords = new ArrayList<TimeSheet>();
+	private static List<TimeSheet1> TSrecords = new ArrayList<TimeSheet1>();
 	
 	@Autowired
 	private EmployeeService empService;
@@ -158,11 +158,11 @@ public class EmployeeController {
 	public ModelAndView save(@ModelAttribute("timeSheetForm") TimeSheetForm TSForm) {
 		System.out.println(TSForm);
 		System.out.println(TSForm.getTimesheetRecords());
-		List<TimeSheet> records = TSForm.getTimesheetRecords();
+		List<TimeSheet1> records = TSForm.getTimesheetRecords();
 		
 		if(null != records && records.size() > 0) {
 			EmployeeController.TSrecords = records;
-			for (TimeSheet record : TSrecords) {
+			for (TimeSheet1 record : TSrecords) {
 				System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
 			}
 		}

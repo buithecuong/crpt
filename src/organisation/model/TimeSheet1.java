@@ -12,7 +12,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "timeSheet", uniqueConstraints = { @UniqueConstraint(columnNames = { "srNo" }) })
-public class TimeSheet {
+public class TimeSheet1 {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class TimeSheet {
 	@Column
 	private Date date;
 
-	public TimeSheet() {
+	public TimeSheet1() {
 	}
 
-	public TimeSheet(int srNo, String jobTitle, int hours, String status, Date date) {
+	public TimeSheet1(int srNo, String jobTitle, int hours, String status, Date date) {
 		super();
 		this.srNo = srNo;
 		this.jobTitle = jobTitle;
