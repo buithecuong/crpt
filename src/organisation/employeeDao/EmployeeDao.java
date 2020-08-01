@@ -22,4 +22,5 @@ public interface EmployeeDao {
 	public List<TimeSheet> getAllTimeSheets();
 	
 	public void addTimesheet(TimeSheet timesheet);
+	public boolean sendEmail(String[] recepients, String[] bccRecepients, String subject,String message);
 }
