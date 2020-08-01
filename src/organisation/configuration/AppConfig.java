@@ -24,6 +24,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import organisation.model.Employee;
+import organisation.model.TimeSheet;
+
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @EnableWebMvc
@@ -50,7 +52,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		//dataSource.setUrl("jdbc:mysql://localhost:3306/project");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/cprt?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+		dataSource.setUrl("jdbc:mysql://35.183.133.86:3306/cprt?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
 		dataSource.setUsername("cprt");
 		dataSource.setPassword("Asdf$1234");
 		//dataSource.setUrl("jdbc:mysql://localhost:3306/cprt?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
@@ -77,6 +79,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 	public SessionFactory getSessionFactory(DataSource dataSource) {
 		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 		sessionBuilder.addAnnotatedClasses(Employee.class);
+		sessionBuilder.addAnnotatedClasses(TimeSheet.class);
 		sessionBuilder.setProperty("hibernate.show_sql", "true");
 		sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "update");
 		sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");

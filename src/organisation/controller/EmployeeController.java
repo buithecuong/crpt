@@ -1,5 +1,7 @@
 package organisation.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import organisation.employeeService.EmployeeService;
 import organisation.timesheetService.TimesheetService;
@@ -78,7 +83,40 @@ public class EmployeeController {
 		status.setComplete();
 		return new ModelAndView("intro", "name", employee.getName());
 	}
+	
+	@RequestMapping(value = "contact")
+	public ModelAndView contact() {
+		return new ModelAndView("contact");
+	}
+	@RequestMapping(value = "sendEmail", method = RequestMethod.POST) // validating new employee
+	public ModelAndView sendEmail(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("employee") Employee employee, BindingResult result, SessionStatus status) {
 
+		boolean error = false;
+		ModelAndView mav = null;
+
+		if (error) {
+
+			mav = new ModelAndView("register");
+			mav.addObject("employee", new Employee());
+			return mav;
+		}
+
+		String recepient = request.getParameter("toEmail");
+		String sender = request.getParameter("fromEmail");
+		String subject = request.getParameter("subject");
+		String phone_number = request.getParameter("telephone");
+		String message =request.getParameter("message") + "\n" + request.getParameter("name")+ "\n Phone Number:" + phone_number;
+	
+		String [] recepients =recepient.split(",");
+		String [] bccRecepients =new String[]{sender};
+		String msg = "Please try again! ";
+		if (empService.sendEmail(recepients, bccRecepients, subject, message))
+			msg = "Email is sent ";
+		
+		return new ModelAndView("intro", "msg", msg);
+	}
+	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET) // Session Check
 	public ModelAndView userProfile(HttpServletRequest request, HttpSession session, HttpServletResponse response,
 			Employee employee) {

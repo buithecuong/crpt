@@ -32,5 +32,7 @@ public interface EmployeeService {
 	public String addTimesheet(TimeSheet timesheet);
 	
 	public List<TimeSheet> getListTimesheet();
+	
+	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message);
 
 }

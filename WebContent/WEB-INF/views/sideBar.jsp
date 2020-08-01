@@ -14,7 +14,7 @@
           <img src="${pageContext.request.contextPath}/resources/images/cbui.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">${firstname}</a>
+          <a href="profile" class="d-block">${firstname}</a>
         </div>
       </div>
 
@@ -97,9 +97,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="contact" class="nav-link">
               <i class="nav-icon far fa-circle text-info"></i>
-              <p>Informational</p>
+              <p>Contact</p>
             </a>
           </li>
         </ul>

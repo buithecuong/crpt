@@ -43,12 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getAllTimeSheets();
 	}
 	
-	/*@Transactional
-	@Override
-	public int addTimeSheet(TimeSheet timesheet) {
-		employeeDao.addTimesheet(timesheet);
-		return timesheet.getSrNo();
-	}*/
+
 
 	@Transactional
 	@Override
@@ -135,5 +130,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<TimeSheet> getListTimesheet() {
 		return employeeDao.getAllTimeSheets();
 	}
-
+	
+	@Transactional
+	@Override
+	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message) {
+		return employeeDao.sendEmail(recepients, bccRecepients, subject, message);
+	}
 }
