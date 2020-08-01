@@ -7,7 +7,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.ModelAndView;
 
+
 import organisation.model.Employee;
+import organisation.model.TimeSheet;
 
 public interface EmployeeService {
 
@@ -25,6 +27,10 @@ public interface EmployeeService {
 
 	public ModelAndView checkSession(Employee employee, HttpSession session);
 
-	List<Employee> getTimeSheetList();
+	List<TimeSheet> getTimeSheetList();
+	
+	public String addTimesheet(TimeSheet timesheet);
+	
+	public List<TimeSheet> getListTimesheet();
 
 }

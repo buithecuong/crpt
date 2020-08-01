@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import organisation.employeeDao.EmployeeDao;
 import organisation.model.Employee;
+import organisation.model.TimeSheet;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -58,14 +59,24 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	
 	@Override
-	public List<Employee> getAllTimeSheets() {
+	public List<TimeSheet> getAllTimeSheets() {
 		Session session = sessionFactory.openSession();
 		
 		@SuppressWarnings("unchecked")
-		List<Employee> timeSheetList = session.createQuery("from timeSheet order by srNO").list();
+		List<TimeSheet> timeSheetList = session.createQuery("from TimeSheet order by srNO").list();
 		
 		session.close();
 		return timeSheetList;
+	}
+	
+	@Override
+	public void addTimesheet(TimeSheet timesheet) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(timesheet);
+		session.flush();
+		tx.commit();
+		session.close();
 	}
 
 	@Override
@@ -98,6 +109,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		session.close();
 		return employee.getId();
 	}
-
+	
 }
 

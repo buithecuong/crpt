@@ -19,21 +19,26 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import organisation.employeeService.EmployeeService;
+import organisation.timesheetService.TimesheetService;
 import organisation.model.Employee;
-import organisation.model.TimeSheet1;
+import organisation.model.TimeSheet;
 import organisation.model.TimeSheetForm;
+
+import organisation.model.Contact;
+import organisation.model.ContactForm;
+
 
 @Controller
 public class EmployeeController {
 
-	private static List<TimeSheet1> TSrecords = new ArrayList<TimeSheet1>();
+	private static List<TimeSheet> TSrecords = new ArrayList<TimeSheet>();
 	
 	@Autowired
 	private EmployeeService empService;
 
 	@RequestMapping("/")
 	public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		return new ModelAndView("welcome");
+		return new ModelAndView("home");
 	}
 
 	@RequestMapping(value = "welcome")
@@ -158,19 +163,106 @@ public class EmployeeController {
 	public ModelAndView save(@ModelAttribute("timeSheetForm") TimeSheetForm TSForm) {
 		System.out.println(TSForm);
 		System.out.println(TSForm.getTimesheetRecords());
-		List<TimeSheet1> records = TSForm.getTimesheetRecords();
+		List<TimeSheet> records = TSForm.getTimesheetRecords();
 		
 		if(null != records && records.size() > 0) {
 			EmployeeController.TSrecords = records;
-			for (TimeSheet1 record : TSrecords) {
+			for (TimeSheet record : TSrecords) {
 				System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
+				empService.addTimesheet(record);
 			}
 		}
 		
-		List<Employee> timeSheetList = empService.getTimeSheetList();
+		List<TimeSheet> timeSheetList = empService.getTimeSheetList();
 		
 		return new ModelAndView("showContact", "timeSheetList", timeSheetList);
 	
+	}
+	
+	@RequestMapping(value = "/datepickerRow", method = RequestMethod.GET)
+	public ModelAndView datepickerRow(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			 Employee employee) {
+
+		return new ModelAndView("DatePickerRow");
+	}
+	
+	@RequestMapping(value = "/dailyTimesheetRow", method = RequestMethod.GET)
+	public ModelAndView dailytimesheet_single(Model model,HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			 Employee employee) {
+		model.addAttribute("timesheet", new TimeSheet());
+		return new ModelAndView("timesheetRow");
+	}
+
+	@RequestMapping(value = "/addTimesheetRow", method = RequestMethod.POST) // validating new employee
+	public ModelAndView addTimesheet(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("timesheet") TimeSheet timesheet, BindingResult result, SessionStatus status) {
+
+		boolean error = false;
+		ModelAndView mav = null;
+
+		if (error) {
+
+			mav = new ModelAndView("dailyTimesheet");
+			mav.addObject("timesheet", new TimeSheet());
+			return mav;
+		}
+
+		empService.addTimesheet(timesheet);
+
+		status.setComplete();
+		List<TimeSheet> timesheetList = empService.getListTimesheet();
+		for (TimeSheet record : timesheetList) {
+			System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
+		}
+		return new ModelAndView("showTimesheet","timesheetList", timesheetList);
+	}
+	
+	
+	@RequestMapping(value = "/viewTimesheetList", method = RequestMethod.GET) // 
+	public ModelAndView getTimesheetList() {
+
+		List<TimeSheet> timesheetList = empService.getListTimesheet();
+		for (TimeSheet record : timesheetList) {
+			System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
+		}
+		return new ModelAndView("showTimesheet","timesheetList", timesheetList);
+	}
+	
+	
+	
+	
+	private static List<Contact> contacts = new ArrayList<Contact>();
+
+	static {
+		contacts.add(new Contact("Barack", "Obama", "barack.o@whitehouse.com", "147-852-965"));
+		contacts.add(new Contact("George", "Bush", "george.b@whitehouse.com", "785-985-652"));
+		contacts.add(new Contact("Bill", "Clinton", "bill.c@whitehouse.com", "236-587-412"));
+		contacts.add(new Contact("Ronald", "Reagan", "ronald.r@whitehouse.com", "369-852-452"));
+	}
+	
+	@RequestMapping(value = "/getContact", method = RequestMethod.GET)
+	public ModelAndView get() {
+		
+		ContactForm contactForm = new ContactForm();
+		contactForm.setContacts(contacts);
+		
+		return new ModelAndView("add_contact" , "contactForm", contactForm);
+	}
+	
+	@RequestMapping(value = "/saveContact", method = RequestMethod.POST)
+	public ModelAndView save(@ModelAttribute("contactForm") ContactForm contactForm) {
+		System.out.println(contactForm);
+		System.out.println(contactForm.getContacts());
+		List<Contact> contacts = contactForm.getContacts();
+		
+		if(null != contacts && contacts.size() > 0) {
+			EmployeeController.contacts = contacts;
+			for (Contact contact : contacts) {
+				System.out.printf("%s \t %s \n", contact.getFirstname(), contact.getLastname());
+			}
+		}
+		
+		return new ModelAndView("show_contact", "contactForm", contactForm);
 	}
 
 }

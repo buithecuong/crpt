@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import organisation.employeeDao.EmployeeDao;
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
+import organisation.model.TimeSheet;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -38,9 +39,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Transactional
 	@Override
-	public List<Employee> getTimeSheetList() {
+	public List<TimeSheet> getTimeSheetList() {
 		return employeeDao.getAllTimeSheets();
 	}
+	
+	/*@Transactional
+	@Override
+	public int addTimeSheet(TimeSheet timesheet) {
+		employeeDao.addTimesheet(timesheet);
+		return timesheet.getSrNo();
+	}*/
 
 	@Transactional
 	@Override
@@ -113,6 +121,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 
 		return mav;
+	}
+	
+	@Transactional
+	@Override
+	public String addTimesheet(TimeSheet timesheet) {
+		employeeDao.addTimesheet(timesheet);
+		return timesheet.getJobTitle();
+	}
+	
+	@Transactional
+	@Override
+	public List<TimeSheet> getListTimesheet() {
+		return employeeDao.getAllTimeSheets();
 	}
 
 }

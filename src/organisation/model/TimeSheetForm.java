@@ -2,13 +2,13 @@ package organisation.model;
 import java.util.List;
 public class TimeSheetForm {
 
-	private List<TimeSheet1> timeSheetRecords;
+	private List<TimeSheet> timeSheetRecords;
 
-	public List<TimeSheet1> getTimesheetRecords() {
+	public List<TimeSheet> getTimesheetRecords() {
 		return timeSheetRecords;
 	}
 
-	public void setContacts(List<TimeSheet1> timeSheetRecords) {
+	public void setContacts(List<TimeSheet> timeSheetRecords) {
 		this.timeSheetRecords = timeSheetRecords;
 	}
 }

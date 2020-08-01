@@ -5,18 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import organisation.timesheetDao.TimesheetDao;
-import organisation.model.Timesheet;
+import organisation.model.TimeSheet;
 
 public class TimesheetServiceImpl implements TimesheetService {
 	
 	@Autowired
 	TimesheetDao TimesheetDao;
 
-	Timesheet timeSheet;
+	TimeSheet timeSheet;
 
 	@Override
-	public List<Timesheet> getList() {
-		List<Timesheet> timesheetList = TimesheetDao.getTimesheet();
+	public List<TimeSheet> getList() {
+		List<TimeSheet> timesheetList = TimesheetDao.getTimesheet();
 		return timesheetList;
 	}
 
@@ -27,14 +27,14 @@ public class TimesheetServiceImpl implements TimesheetService {
 	}
 
 	@Override
-	public int updatetimesheet(Timesheet timesheet) {
+	public int updatetimesheet(TimeSheet timesheet) {
 		int updatedId = TimesheetDao.updateTime(timesheet);
 		return updatedId;
 	}
 
 	@Override
-	public Timesheet TimesheetDetails(int timesheetId) {
-		Timesheet timesheet = (Timesheet) TimesheetDao.getTimesheet();
+	public TimeSheet TimesheetDetails(int timesheetId) {
+		TimeSheet timesheet = (TimeSheet) TimesheetDao.getTimesheet();
 		return timesheet;
 	}
 

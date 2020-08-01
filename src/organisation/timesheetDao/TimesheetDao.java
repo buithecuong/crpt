@@ -2,15 +2,15 @@ package organisation.timesheetDao;
 
 import java.util.List;
 
-import organisation.model.Timesheet;
+import organisation.model.TimeSheet;
 
 public interface TimesheetDao {
 	
-	public List<Timesheet> getTimesheet();
+	public List<TimeSheet> getTimesheet();
 
 	public int deleteTimeDetails(int id);
 
-	public int updateTime(Timesheet timesheet);
+	public int updateTime(TimeSheet timesheet);
 	
 
 }

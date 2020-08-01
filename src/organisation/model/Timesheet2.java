@@ -11,7 +11,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "timesheet", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 
-public class Timesheet {
+public class Timesheet2 {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

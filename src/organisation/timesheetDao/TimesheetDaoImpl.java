@@ -7,17 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-import organisation.model.Timesheet;
+import organisation.model.TimeSheet;
+
 public class TimesheetDaoImpl implements TimesheetDao {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public List<Timesheet> getTimeshett() {
+	@Override
+	public List<TimeSheet> getTimesheet() {
 
 		Session session = sessionFactory.openSession();
 		@SuppressWarnings("unchecked")
-		List<Timesheet> timesheetList = session.createQuery("from timesheet order by id").list();
+		List<TimeSheet> timesheetList = session.createQuery("from timesheet order by srNo").list();
 		session.close();
 		return timesheetList;
 	}
@@ -27,7 +29,7 @@ public class TimesheetDaoImpl implements TimesheetDao {
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		Timesheet timesheet = (Timesheet) session.get(Timesheet.class, id);
+		TimeSheet timesheet = (TimeSheet) session.get(TimeSheet.class, id);
 
 		session.delete(timesheet);
 		session.flush();
@@ -37,7 +39,7 @@ public class TimesheetDaoImpl implements TimesheetDao {
 
 	}
 
-	public int updateTime(Timesheet timesheet) {
+	public int updateTime(TimeSheet timesheet) {
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -45,19 +47,13 @@ public class TimesheetDaoImpl implements TimesheetDao {
 		session.flush();
 		tx.commit();
 		session.close();
-		return timesheet.getId();
+		return timesheet.getSrNo();
 	}
 	
-	public Timesheet getTimeSheetDetails(int id) {
+	public TimeSheet getTimeSheetDetails(int id) {
 		Session session = sessionFactory.openSession();
-		Timesheet ts = session.load(Timesheet.class, id);
+		TimeSheet ts = session.load(TimeSheet.class, id);
         return ts;
-	}
-
-	@Override
-	public List<Timesheet> getTimesheet() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	

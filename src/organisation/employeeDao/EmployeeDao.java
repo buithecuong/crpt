@@ -3,6 +3,7 @@ package organisation.employeeDao;
 import java.util.*;
 
 import organisation.model.Employee;
+import organisation.model.TimeSheet;
 
 public interface EmployeeDao {
 
@@ -18,5 +19,7 @@ public interface EmployeeDao {
 
 	public Employee validateUserDao(Employee employee);
 
-	List<Employee> getAllTimeSheets();
+	public List<TimeSheet> getAllTimeSheets();
+	
+	public void addTimesheet(TimeSheet timesheet);
 }

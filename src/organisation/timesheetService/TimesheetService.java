@@ -2,16 +2,16 @@ package organisation.timesheetService;
 
 import java.util.List;
 
-import organisation.model.Timesheet;
+import organisation.model.TimeSheet;
 
 public interface TimesheetService {
 	
-	public List<Timesheet> getList();
+	public List<TimeSheet> getList();
 
 	public int deleteTimesheetDetails(int id);
 
-	public int updatetimesheet(Timesheet timesheet);
+	public int updatetimesheet(TimeSheet timesheet);
 
-	public Timesheet TimesheetDetails(int timesheetId);
+	public TimeSheet TimesheetDetails(int timesheetId);
 
 }

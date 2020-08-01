@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import organisation.timesheetService.TimesheetService;
-import organisation.model.Timesheet;
+import organisation.model.TimeSheet;
 
 public class TimesheetController {
 	
@@ -24,13 +24,13 @@ public class TimesheetController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView getList() {
 
-		List<Timesheet> timesheetList = timeService.getList();
+		List<TimeSheet> timesheetList = timeService.getList();
 		return new ModelAndView("list", "timesheetList", timesheetList);
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView getTimesheetDetails(HttpServletRequest request, HttpSession session, ModelMap userModel,
-			@ModelAttribute("timesheet") Timesheet timesheet) {
+			@ModelAttribute("timesheet") TimeSheet timesheet) {
 		int timesheetId = Integer.parseInt(request.getParameter("id"));
 		session = request.getSession(true);
 		timesheet = timeService.TimesheetDetails(timesheetId);
@@ -40,7 +40,7 @@ public class TimesheetController {
 
 	@RequestMapping(value = "/updateSave", method = RequestMethod.POST)
 	public ModelAndView updatetimesheet(HttpServletRequest request, HttpSession session, HttpServletResponse response,
-			@ModelAttribute("timesheet") Timesheet timesheet) {
+			@ModelAttribute("timesheet") TimeSheet timesheet) {
 		timeService.updatetimesheet(timesheet);
 		return new ModelAndView("preTimesheet");
 	}

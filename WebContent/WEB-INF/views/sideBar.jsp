@@ -46,7 +46,7 @@
             
           </li>
           <li class="nav-item">
-            <a href="dailyTimesheet" class="nav-link">
+            <a href="datepickerRow" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Timesheets
@@ -64,12 +64,21 @@
               </p>
             </a>
           </li>
-          <li class="nav-header">EXAMPLES</li>
+          <li class="nav-header">View</li>
           <li class="nav-item">
-            <a href="pages/calendar.html" class="nav-link">
+            <a href="list" class="nav-link">
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>
-                Calendar
+                List Employees
+                <span class="badge badge-info right">2</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="viewTimesheetList" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                List Timesheets
                 <span class="badge badge-info right">2</span>
               </p>
             </a>
@@ -82,7 +91,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="getContact" class="nav-link">
               <i class="nav-icon far fa-circle text-warning"></i>
               <p>Warning</p>
             </a>

@@ -28,7 +28,7 @@
   <label id="icon" for="name"><i class="icon-user"></i></label>
   <input type="text" name="name" id="name" placeholder="Name" required/>
   <label id="icon" for="username"><i class="icon-user"></i></label>
-  <input type="text" name="username" id="name" placeholder="Name" required/>
+  <input type="text" name="username" id="name" placeholder="Username" required/>
   <label id="icon" for="email"><i class="icon-envelope "></i></label>
   <input type="text" name="email" id="email" placeholder="Email" required/>
   <div>
