@@ -1,12 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CRPT | CONTACT</title>
+  <title>CRPT | TIMESHEET</title>
  
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -17,47 +18,46 @@
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
 <style type="text/css">
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
+Body {
+	font-family: Calibri, Helvetica, sans-serif;
+	background-color: white;
 }
 
-li {
-  float: left;
+button {
+	background-color: #4CAF50;
+	width: 100%;
+	color: orange;
+	padding: 15px;
+	margin: 10px 0px;
+	border: none;
+	cursor: pointer;
 }
 
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+form {
+	border: 3px solid #f1f1f1;
 }
 
-li a:hover {
-  background-color: #111;
+input[type=text] {
+	width: 100%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+td {
+	margin: 8px 0;
+}
+
+button:hover {
+	opacity: 0.7;
+}
+
+.container {
+	padding: 25px;
+	background-color: lightblue;
 }
 
 table {
-  width:100%;
-}
-table, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-td {
-  padding: 15px;
-  text-align: left;
-}
-table#t01 tr {
-  background-color: #eee;
-}
-input#submit_button {
-  background-color: black;
-  color: white;
+	border: 1px solid black;
 }
 </style>
 </head>
@@ -91,12 +91,12 @@ input#submit_button {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT CONTACT</h1>
+            <h1 class="m-0 text-dark">CRPT Timesheet</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">CONTACT</li>
+              <li class="breadcrumb-item active">TimeSheet</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -117,55 +117,41 @@ input#submit_button {
                 </div>
               </div>
               <div class="card-body">
-                <h2 style="text-align:center" >CRPT</h3>
-                <ul>
-                  <li><a class="active" href="#">Search</a></li>
-                  <li><a href="#">Contact</a></li>
-                  <li><a href="#">About Us</a></li>
-                </ul>
-                <h3>Contact Us</h3>
-                <form name="contactform" method="post" action="sendEmail">
-                <table width="450px" id="t01">
-                <tr>
-                  <td valign="top">
-                  <input  type="text" value="From Email" name="fromEmail" maxlength="50" size="30">
-                 </td>
-                 <td valign="top">
-                  <input  type="text" value="TO Email" name="toEmail" maxlength="80" size="30">
-                 </td>
-                </tr>
-                <tr>
-                 <td valign="top">
-                  <input  type="text" value="Name" name="name" maxlength="50" size="30">
-                 </td>
-                 <td valign="top" >
-                  <input  type="text" value="Phone Number" name="telephone" maxlength="30" size="30">
-                 </td>
-                </tr>
-                <tr>
-                <tr>
-                 <td valign="top" colspan="2">
-                  <input  type="text" value="Subject" name="subject" maxlength="40" size="40">
-                 </td>
-                </tr>
-                <tr>
-                 <td valign="top" colspan="2">
-                  <textarea  name="message" value="message" maxlength="1000" cols="120" rows="20"></textarea>
-                 </td>
-                </tr>
-                <tr>
-                 <td style="text-align:left" colspan="2">
-                  <input type="submit" value="sendEmail" size="30" id="submit_button"> 
-                 </td>
-                </tr>
-                </table>
-                </form>
+                <%
+                    out.println("The timesheet for the day " + request.getParameter("day"));
+                %><br />
+
+                <form:form name="regForm"  method="post"
+                    action="addTimesheetRow" modelAttribute="timesheet">
+
+                    
+                    <table id="TimeSheet" width="350px" border="1">
+                        <tr>
+                            <th>Job_Title</th>
+                            <th>Hours</th>
+                            <th>Status</th>
+                            <th>Date</th>
+
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="jobTitle" id="jobTitle" /></td>
+                            <td><input type="number" name="hours" id="hours" /></td>
+                            <td><input type="text" name="status" id="status" /></td>
+                            <td><input type="text" name="date" id="date"
+                                value="<%=request.getParameter("day")%>" /></td>
+                        </tr>
+
+                    </table>
+                    <br />
+                    <input type="submit" value="addTimesheetRow" />
+                </form:form>
                </div>
             </div>
             <!-- /.card -->
 
             
           </div>
+          
           <!-- /.col-md-6 -->
           <!-- /.col-md-6 -->
         </div>

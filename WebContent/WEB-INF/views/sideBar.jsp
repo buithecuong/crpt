@@ -14,7 +14,7 @@
           <img src="${pageContext.request.contextPath}/resources/images/cbui.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="profile" class="d-block">${firstname}</a>
+          <a href="intro" class="d-block">${firstname}</a>
         </div>
       </div>
 

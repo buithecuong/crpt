@@ -43,7 +43,7 @@ public class EmployeeController {
 
 	@RequestMapping("/")
 	public ModelAndView welcome(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		return new ModelAndView("home");
+		return new ModelAndView("login");
 	}
 
 	@RequestMapping(value = "welcome")

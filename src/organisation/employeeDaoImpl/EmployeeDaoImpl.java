@@ -115,9 +115,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 	
 	private String SMTP_HOST ="smtp.gmail.com";
-	private String FROM_ADDRESS ="troesbess1@gmail.com";
-	private String PASSWORD ="energy-storage";
-	private String FROM_NAME="The Cuong Bui";
+	private String FROM_ADDRESS ="xxx@gmail.com";
+	private String PASSWORD ="xxxx";
+	private String FROM_NAME="CRPT ADMIN";
 	
 	@Override	               
 	public boolean sendEmail(String[] recepients, String[] bccRecepients, String subject,String message)
