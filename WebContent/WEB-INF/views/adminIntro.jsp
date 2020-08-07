@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
+ 
 </head>
 <!--
 `body` tag options:
@@ -65,6 +66,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-6">
+            <!-- /.card -->
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">

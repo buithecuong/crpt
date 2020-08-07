@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
+import organisation.model.DailyTimeSheet;
 
 public interface EmployeeService {
 
@@ -32,6 +33,8 @@ public interface EmployeeService {
 	public String addTimesheet(TimeSheet timesheet);
 	
 	public List<TimeSheet> getListTimesheet();
+	
+	public List<DailyTimeSheet> getListDailyTimesheet();
 	
 	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message);
 

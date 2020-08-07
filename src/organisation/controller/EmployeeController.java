@@ -27,6 +27,7 @@ import organisation.employeeService.EmployeeService;
 import organisation.timesheetService.TimesheetService;
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
+import organisation.model.DailyTimeSheet;
 import organisation.model.TimeSheetForm;
 
 import organisation.model.Contact;
@@ -264,6 +265,28 @@ public class EmployeeController {
 			System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
 		}
 		return new ModelAndView("showTimesheet","timesheetList", timesheetList);
+	}
+	
+	
+	@RequestMapping(value = "/viewDailyTimesheetList", method = RequestMethod.GET) // 
+	public ModelAndView getDailyTimesheetList() {
+
+		List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
+		for (DailyTimeSheet record : dailytimesheetList) {
+			System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
+		}
+		return new ModelAndView("showDailyTimesheet","dailytimesheetList", dailytimesheetList);
+	}
+	
+	
+	@RequestMapping(value = "/viewDailyTimesheetChart", method = RequestMethod.GET) // 
+	public ModelAndView getDailyTimesheetChart() {
+
+		List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
+		for (DailyTimeSheet record : dailytimesheetList) {
+			System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
+		}
+		return new ModelAndView("showDailyTimesheetChart","dataPoints", dailytimesheetList);
 	}
 	
 	

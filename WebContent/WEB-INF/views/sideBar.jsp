@@ -49,6 +49,15 @@
             <a href="datepickerRow" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
+                Timesheet single row
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="datepicker" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
                 Timesheets
                 <span class="right badge badge-danger">New</span>
               </p>
@@ -85,9 +94,15 @@
           </li>
           <li class="nav-header">LABELS</li>
           <li class="nav-item">
-            <a href="datepicker" class="nav-link">
+            <a href="viewDailyTimesheetList" class="nav-link">
               <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">Important</p>
+              <p class="text">DailyTimeSheet List</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="viewDailyTimesheetChart" class="nav-link">
+              <i class="nav-icon far fa-circle text-danger"></i>
+              <p class="text">DailyTimeSheet Chart</p>
             </a>
           </li>
           <li class="nav-item">

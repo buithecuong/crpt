@@ -14,6 +14,7 @@ import organisation.employeeDao.EmployeeDao;
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
+import organisation.model.DailyTimeSheet;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -36,6 +37,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getAllEmployees();
 	}
 	
+	
+	@Transactional
+	@Override
+	public List<DailyTimeSheet> getListDailyTimesheet() {
+		return employeeDao.getAllTimeSheetByDate();
+	}
 	
 	@Transactional
 	@Override

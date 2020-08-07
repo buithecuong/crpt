@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,7 @@ import javax.mail.internet.MimeMessage;
 import organisation.employeeDao.EmployeeDao;
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
+import organisation.model.DailyTimeSheet;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -67,10 +69,24 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		Session session = sessionFactory.openSession();
 		
 		@SuppressWarnings("unchecked")
-		List<TimeSheet> timeSheetList = session.createQuery("from TimeSheet order by srNO").list();
 		
+		List<TimeSheet> timeSheetList = session.createQuery("from TimeSheet order by date, srNo").list();
 		session.close();
 		return timeSheetList;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public List<DailyTimeSheet> getAllTimeSheetByDate() {
+		Session session = sessionFactory.openSession();
+		System.out.printf("test inside DAO before");
+		@SuppressWarnings("unchecked")		
+		Query query = session.createQuery("SELECT new organisation.model.DailyTimeSheet(sum(hours), date) "
+		  + "from TimeSheet group by date");
+	    List<DailyTimeSheet> dailyTimeSheetList = query.list();
+		System.out.printf("test inside DAO after");
+		session.close();
+		return dailyTimeSheetList;
 	}
 	
 	@Override
