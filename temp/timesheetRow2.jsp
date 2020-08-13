@@ -16,6 +16,49 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
+<style type="text/css">
+Body {
+	font-family: Calibri, Helvetica, sans-serif;
+	background-color: white;
+}
+
+button {
+	background-color: #4CAF50;
+	width: 100%;
+	color: orange;
+	padding: 15px;
+	margin: 10px 0px;
+	border: none;
+	cursor: pointer;
+}
+
+form {
+	border: 3px solid #f1f1f1;
+}
+
+input[type=text] {
+	width: 100%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+td {
+	margin: 8px 0;
+}
+
+button:hover {
+	opacity: 0.7;
+}
+
+.container {
+	padding: 25px;
+	background-color: lightblue;
+}
+
+table {
+	border: 1px solid black;
+}
+</style>
 </head>
 <!--
 `body` tag options:
@@ -30,14 +73,14 @@
 <div class="wrapper">
   <!-- Navbar -->
   <div id="header">
-    <jsp:include page="navBar.jsp"/>
+
 </div>
  
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <div id="header">
-    <jsp:include page="sideBar.jsp"/>
+    
 </div>
 
   <!-- Content Wrapper. Contains page content -->
@@ -73,39 +116,42 @@
                 </div>
               </div>
               <div class="card-body">
-                <form:form name="regForm" method="post" action="save" modelAttribute="timeSheetForm">
-
                 <%
                     out.println("The timesheet for the day " + request.getParameter("day"));
                 %><br />
 
-                <input type="button" value="Add Row" onclick="addRow('dataTable')" />
+                <form:form name="regForm"  method="post"
+                    action="addTimesheetRow" modelAttribute="timesheet">
 
-                <input type="button" value="Delete Row"
-                    onclick="deleteRow('dataTable')" />
-
-                <table id="dataTable" width="350px" border="1">
-                    <tr>
-                        <th></th>
-                        <th>Job_Title</th>
-                        <th>Hours</th>
-                        <th>Status</th>
-                    </tr>
-                    <c:forEach items="${timeSheetForm.timeSheetRecords}" var="timeSheet">
-                        <tr>
-                            <td><input type="checkbox" name="chk" /></td>
-                            <td><input name="timeSheet[${counter.index}].jobTitle"
-                                value="${timeSheet.jobTitle}" /></td>
-                            <td><input name="timeSheet[${counter.index}].hours"
-                                value="${timeSheet.hours}" /></td>
-                            <td><input name="timeSheet[${counter.index}].status"
-                                value="${timeSheet.status}" /></td>
-                        </tr>
-                    </c:forEach>
                     
-                </table>
-                <br />
-                <input type="submit" value="Save" />
+                    <table id="TimeSheet" width="350px" border="1">
+                        <tr>
+                            <th>Job_Title</th>
+                            <th>Hours</th>
+                            <th>Status</th>
+                            <th>Date</th>
+
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="jobTitle" id="jobTitle" /></td>
+                            <td><input type="number" name="hours" id="hours" /></td>
+                            <td>                        
+                            <select name='status' id="status">
+                                  <option value="New" selected>New</option>
+                                  <option value="Inprogress">InProgress</option>
+                                  <option value="Block">Block</option>
+                                  <option value="Completed">Completed</option>
+                                  <option value="Canceled">Canceled</option>
+                                </select>
+                            
+                            </td>
+                            <td><input type="text" name="date" id="date"
+                                value="<%=request.getParameter("day")%>" /></td>
+                        </tr>
+
+                    </table>
+                    <br />
+                    <input type="submit" value="addTimesheetRow" />
                 </form:form>
                </div>
             </div>
@@ -113,9 +159,8 @@
 
             
           </div>
-          <div class="col-lg-6">
-          <h1 class="m-0 text-dark">History</h1>
-          </div>
+          
+          <!-- /.col-md-6 -->
           <!-- /.col-md-6 -->
         </div>
         <!-- /.row -->
@@ -134,7 +179,7 @@
 
   <!-- Main Footer -->
    <div id="header">
-    <jsp:include page="footer.jsp"/>
+    
 </div>
 </div>
 <!-- ./wrapper -->

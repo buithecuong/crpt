@@ -61,14 +61,14 @@ td
 <div class="wrapper">
   <!-- Navbar -->
   <div id="header">
-    <jsp:include page="navBar.jsp"/>
+   
 </div>
  
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <div id="header">
-    <jsp:include page="sideBar.jsp"/>
+    
 </div>
 
   <!-- Content Wrapper. Contains page content -->
@@ -207,7 +207,7 @@ td
 
   <!-- Main Footer -->
    <div id="header">
-    <jsp:include page="footer.jsp"/>
+   
 </div>
 </div>
 <!-- ./wrapper -->

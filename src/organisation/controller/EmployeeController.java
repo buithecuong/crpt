@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
+import organisation.model.SumTimeSheet;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
 import organisation.model.TimeSheetForm;
@@ -88,6 +89,7 @@ public class EmployeeController {
 	public ModelAndView contact() {
 		return new ModelAndView("contact");
 	}
+	
 	@RequestMapping(value = "sendEmail", method = RequestMethod.POST) // validating new employee
 	public ModelAndView sendEmail(HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("employee") Employee employee, BindingResult result, SessionStatus status) {
@@ -136,8 +138,28 @@ public class EmployeeController {
 	public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@ModelAttribute("employee") Employee employee) {
 		session = request.getSession();
-		return empService.validateEmployee(employee, request, session);
+		
+		ModelAndView mav = empService.validateEmployee(employee, request, session);
+		return mav;
 
+	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public ModelAndView goHome(HttpServletRequest request, HttpSession session, 
+			@ModelAttribute("employee") Employee employee) {
+		ModelAndView mav = null;
+		// Employee is User or Admin
+		mav = new ModelAndView("adminIntro");
+		List<TimeSheet> timesheetList = empService.getListTimesheet();
+		mav.addObject("timesheetList", timesheetList);
+		List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
+		mav.addObject("dailytimesheetList", dailytimesheetList);
+		
+		List<SumTimeSheet>  totalTimeSheetHours = empService.getTotalTimesheetHours();
+		
+		mav.addObject("totalTimeSheetHours", totalTimeSheetHours.get(0).getHours());
+		System.out.printf("Total timesheet hours: \t %s \n", totalTimeSheetHours.get(0).getHours());
+		return mav;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -224,6 +246,13 @@ public class EmployeeController {
 		return new ModelAndView("DatePickerRow");
 	}
 	
+	@RequestMapping(value = "/employeeTimeSheetRow", method = RequestMethod.GET)
+	public ModelAndView emloyeetimesheet_single(Model model,HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			 Employee employee) {
+		model.addAttribute("timesheet", new TimeSheet());
+		return new ModelAndView("employeeTimeSheetRow");
+	}
+	
 	@RequestMapping(value = "/dailyTimesheetRow", method = RequestMethod.GET)
 	public ModelAndView dailytimesheet_single(Model model,HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			 Employee employee) {
@@ -286,5 +315,37 @@ public class EmployeeController {
 			System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
 		}
 		return new ModelAndView("showDailyTimesheetChart","dataPoints", dailytimesheetList);
+	}
+	
+	
+	@RequestMapping(value = "/editTimeSheet", method = RequestMethod.GET)
+	public ModelAndView getTimeSheetDetails(HttpServletRequest request, HttpSession session, ModelMap timesheetModel,
+			@ModelAttribute("timesheet") TimeSheet timesheet) {
+		int srNo = Integer.parseInt(request.getParameter("id"));
+		session = request.getSession(true);
+		timesheet = empService.getTimeSheetDetails(srNo);
+		timesheetModel.addAttribute("timesheet", timesheet);
+		return new ModelAndView("editTimeSheet");
+	}
+
+	@RequestMapping(value = "/updateTimeSheet", method = RequestMethod.POST)
+	public ModelAndView updateUser(HttpServletRequest request, HttpSession session, HttpServletResponse response,
+			@ModelAttribute("timesheet") TimeSheet timesheet) {
+		System.out.printf("test update timesheet");
+		empService.updateTimeSheet(timesheet);
+		return new ModelAndView("showTimesheet");
+	}
+
+	@RequestMapping(value = "/deleteTimeSheet", method = RequestMethod.GET)
+	public ModelAndView deleteTimeSheet(HttpServletRequest request, ModelMap userModel) {
+		int srNo = Integer.parseInt(request.getParameter("id"));
+		int resp = empService.deleteTimeSheet(srNo);
+		userModel.addAttribute("TimeSheetDetails", empService.getList());
+		if (resp > 0) {
+			userModel.addAttribute("msg", "TimeSheet with srNo : " + srNo + " deleted successfully.");
+		} else {
+			userModel.addAttribute("msg", "TimeSheet with srNo : " + srNo + " deletion failed.");
+		}
+		return new ModelAndView("adminIntro");
 	}
 }

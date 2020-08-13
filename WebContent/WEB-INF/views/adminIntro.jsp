@@ -122,34 +122,32 @@
                 <table class="table table-striped table-valign-middle">
                   <thead>
                   <tr>
+                    <th>srNo</th>
                     <th>Tasks</th>
                     <th>Hours</th>
+                    <th>Status</th>
                     <th>Date</th>
-                    <th>More</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Task 1" class="img-circle img-size-32 mr-2">
-                      Task 1
-                    </td>
-                    <td>3.0 hrs</td>
-                    <td>
-                      <small class="text-success mr-1">
+                    <c:forEach items="${timesheetList}" var="record">
+                     <tr>
+                       <td width="60" align="center">
+                       <img src="dist/img/default-150x150.png" alt="Task 1" class="img-circle img-size-32 mr-2">
+                       ${record.srNo}
+                   </td>
+                   <td width="60" align="center">${record.jobTitle}</td>
+                   <td width="60" align="center">${record.hours}</td>
+                   <td width="60" align="center">${record.status}</td>
+                   <td width="60" align="center">
+                       <small class="text-success mr-1">
                         <i class="fas fa-arrow-up"></i>
-                        Monday
+                        ${record.date}
                       </small>
-                      Completed
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
+                   </td>
                   </tr>
+                  </c:forEach>                 
                   
-                  </tr>
                   </tbody>
                 </table>
               </div>
@@ -168,7 +166,7 @@
               <div class="card-body">
                 <div class="d-flex">
                   <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">480 hrs</span>
+                    <span class="text-bold text-lg">${totalTimeSheetHours} hrs</span>
                     <span>Working Hours Over Time</span>
                   </p>
                   <p class="ml-auto d-flex flex-column text-right">

@@ -111,27 +111,27 @@ td
                     <table align= "center">
                         <tr>
                             <td>Id :</td>
-                            <td><form:input path="id" /></td>
+                            <td><form:input path="id" value ="${employee.id}"/></td>
                         </tr>
                         <tr>
                             <td>Name :</td>
-                            <td><form:input path="name" /></td>
+                            <td><form:input path="name" value ="${employee.name}" /></td>
                         </tr>
                         <tr>
                             <td>Username :</td>
-                            <td><form:input path="username" /></td>
+                            <td><form:input path="username"  value ="${employee.username}"/></td>
                         </tr>
                         <tr>
                             <td>Password :</td>
-                            <td><form:input path="password" /></td>
+                            <td><form:input path="password" value ="${employee.password}"/></td>
                         </tr>
                         <tr>
                             <td>Team :</td>
-                            <td><form:input path="team" /></td>
+                            <td><form:input path="team" value ="${employee.team}"/></td>
                         </tr>
                         <tr>
                             <td>Status :</td>
-                            <td><form:input path="status" /></td>
+                            <td><form:input path="status" value ="${employee.status}" /></td>
                         </tr>
                         <tr>
                         <tr>

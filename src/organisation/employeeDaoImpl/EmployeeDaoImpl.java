@@ -21,6 +21,7 @@ import organisation.employeeDao.EmployeeDao;
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
+import organisation.model.SumTimeSheet;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -88,6 +89,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 	
 	@Override
+	public List<SumTimeSheet>  getTotalTimeSheetHours() {
+		Session session = sessionFactory.openSession();
+		@SuppressWarnings("unchecked")		
+		Query query = session.createQuery("SELECT new organisation.model.SumTimeSheet(sum(hours)) "
+		  + "from TimeSheet");
+		List<SumTimeSheet> sumTimeSheet = query.list();
+		session.close();
+		return sumTimeSheet;
+	}
+	
+	@Override
 	public void addTimesheet(TimeSheet timesheet) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -96,6 +108,40 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		tx.commit();
 		session.close();
 	}
+
+	@Override
+	public int deleteTimeSheet(int srNo) {
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		TimeSheet timesheet = (TimeSheet) session.get(TimeSheet.class, srNo);
+
+		session.delete(timesheet);
+		session.flush();
+		tx.commit();
+		session.close();
+		return srNo;
+
+	}
+
+	public int updateTimeSheet(TimeSheet timesheet) {
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(timesheet);
+		session.flush();
+		tx.commit();
+		session.close();
+		return timesheet.getSrNo();
+	}
+	
+	public TimeSheet getTimeSheetDetails(int srNo) {
+		Session session = sessionFactory.openSession();
+		TimeSheet ts = session.load(TimeSheet.class, srNo);
+        return ts;
+	}
+
+	
 
 	@Override
 	public Employee getUserDetails(int id) {

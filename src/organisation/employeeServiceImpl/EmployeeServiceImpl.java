@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import organisation.employeeDao.EmployeeDao;
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
+import organisation.model.SumTimeSheet;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
 
@@ -142,5 +143,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message) {
 		return employeeDao.sendEmail(recepients, bccRecepients, subject, message);
+	}
+	
+	
+	TimeSheet timeSheet;
+
+	@Override
+	public int deleteTimeSheet(int srNo) {
+		int deletedid = employeeDao.deleteTimeSheet(srNo);
+		return deletedid;
+	}
+
+	@Override
+	public int updateTimeSheet(TimeSheet timesheet) {
+		int updatedId = employeeDao.updateTimeSheet(timesheet);
+		return updatedId;
+	}
+
+	@Override
+	public TimeSheet getTimeSheetDetails(int timesheetId) {
+		TimeSheet timesheet = (TimeSheet) employeeDao.getTimeSheetDetails(timesheetId);
+		return timesheet;
+	}
+	
+	@Override
+	public List<SumTimeSheet> getTotalTimesheetHours() {
+		return employeeDao.getTotalTimeSheetHours();
 	}
 }

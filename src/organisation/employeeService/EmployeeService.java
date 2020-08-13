@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
+import organisation.model.SumTimeSheet;
 
 public interface EmployeeService {
 
@@ -36,6 +37,14 @@ public interface EmployeeService {
 	
 	public List<DailyTimeSheet> getListDailyTimesheet();
 	
+	public List<SumTimeSheet> getTotalTimesheetHours();
+	
 	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message);
+	
+	public int deleteTimeSheet(int srNo);
+
+	public int updateTimeSheet(TimeSheet timesheet);
+
+	public TimeSheet getTimeSheetDetails(int timesheetId);
 
 }
