@@ -46,10 +46,19 @@
             
           </li>
           <li class="nav-item">
-            <a href="objectives" class="nav-link">
+            <a href="datepickerRow" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Objectives
+                Timesheet single row
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="datepicker" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Timesheets
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
@@ -64,30 +73,39 @@
             </a>
           </li>
           <li class="nav-item has-treeview">
-            <a href="datepicker" class="nav-link">
+            <a href="timesheet_bk" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Multi TimeSheets
+                Layout Options
                 <i class="fas fa-angle-left right"></i>
                 <span class="badge badge-info right">6</span>
               </p>
             </a>
           </li>
           <li class="nav-header">View</li>
-          
           <li class="nav-item">
-            <a href="viewObjectiveList" class="nav-link">
+            <a href="list" class="nav-link">
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>
-                List Objectives
+                List Employees
                 <span class="badge badge-info right">2</span>
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="viewEmployeeTimesheetList" class="nav-link">
+            <a href="viewTimesheetList" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                List Timesheets
+                <span class="badge badge-info right">2</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-header">LABELS</li>
+          <li class="nav-item">
+            <a href="viewDailyTimesheetList" class="nav-link">
               <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">Employee TimeSheet List</p>
+              <p class="text">DailyTimeSheet List</p>
             </a>
           </li>
           <li class="nav-item">

@@ -2,7 +2,10 @@ package organisation.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +29,13 @@ import java.io.PrintWriter;
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
 import organisation.model.SumTimeSheet;
+import organisation.model.SumEmployeeTimeSheet;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
 import organisation.model.TimeSheetForm;
+import organisation.model.EmployeeTimeSheet;
+import organisation.model.DailyEmployeeTimeSheet;
+import organisation.model.Objective;
 
 import organisation.model.Contact;
 import organisation.model.ContactForm;
@@ -140,25 +147,61 @@ public class EmployeeController {
 		session = request.getSession();
 		
 		ModelAndView mav = empService.validateEmployee(employee, request, session);
+		List<Objective> objectiveList = empService.getObjectives();
+		mav.addObject("objectiveList", objectiveList);
+		employee = (Employee) session.getAttribute("employee");
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		mav.addObject("employeetimesheetList", employeetimesheetList);
+		List<EmployeeTimeSheet> currentdateemployeetimesheetList= empService.getListEmployeeTimesheetByCurrentDate(employee);
+		mav.addObject("currentdateemployeetimesheetList", currentdateemployeetimesheetList);
+		List<DailyEmployeeTimeSheet>  dailyemployeetimesheetList =  empService.getListDailyEmployeeTimesheet(employee);
+		mav.addObject("dataPoints", dailyemployeetimesheetList);
+		long totalHours = 0;
+		if (dailyemployeetimesheetList.size() > 0) {
+			
+			List<SumEmployeeTimeSheet>  employeeTotalTimeSheetHours = empService.getEmployeeTotalTimesheetHours(employee);
+			totalHours = employeeTotalTimeSheetHours.get(0).getHours();
+		}
+		
+		mav.addObject("totalTimeSheetHours",totalHours );
+		System.out.printf("Total timesheet hours: \t %s \n", totalHours);
 		return mav;
 
 	}
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView goHome(HttpServletRequest request, HttpSession session, 
-			@ModelAttribute("employee") Employee employee) {
+	public ModelAndView goHome(HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = null;
 		// Employee is User or Admin
-		mav = new ModelAndView("adminIntro");
-		List<TimeSheet> timesheetList = empService.getListTimesheet();
-		mav.addObject("timesheetList", timesheetList);
-		List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
-		mav.addObject("dailytimesheetList", dailytimesheetList);
+		Employee employee = (Employee) session.getAttribute("employee");
+		mav = new ModelAndView("userDashboard");
+		if (employee.getStatus().equals("admin")) {
+			mav = new ModelAndView("adminDashboard");
+		}
+		//session = request.getSession();
 		
-		List<SumTimeSheet>  totalTimeSheetHours = empService.getTotalTimesheetHours();
 		
-		mav.addObject("totalTimeSheetHours", totalTimeSheetHours.get(0).getHours());
-		System.out.printf("Total timesheet hours: \t %s \n", totalTimeSheetHours.get(0).getHours());
+		mav.addObject("employee", employee);
+		List<Objective> objectiveList = empService.getObjectives();
+		mav.addObject("objectiveList", objectiveList);
+		//List<TimeSheet> timesheetList = empService.getListTimesheet();
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		mav.addObject("employeetimesheetList", employeetimesheetList);
+		List<EmployeeTimeSheet> currentdateemployeetimesheetList= empService.getListEmployeeTimesheetByCurrentDate(employee);
+		mav.addObject("currentdateemployeetimesheetList", currentdateemployeetimesheetList);
+		//List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
+		List<DailyEmployeeTimeSheet>  dailyemployeetimesheetList =  empService.getListDailyEmployeeTimesheet(employee);
+		mav.addObject("dataPoints", dailyemployeetimesheetList);
+		
+		long totalHours = 0;
+		if (dailyemployeetimesheetList.size() > 0) {
+			
+			List<SumEmployeeTimeSheet>  employeeTotalTimeSheetHours = empService.getEmployeeTotalTimesheetHours(employee);
+			totalHours = employeeTotalTimeSheetHours.get(0).getHours();
+		}
+		
+		mav.addObject("totalTimeSheetHours",totalHours );
+		System.out.printf("Total timesheet hours: \t %s \n", totalHours);
 		return mav;
 	}
 
@@ -212,15 +255,15 @@ public class EmployeeController {
 		return new ModelAndView("DatePicker");
 	}
 	
-	@RequestMapping(value = "/dailyTimesheet", method = RequestMethod.GET)
+	@RequestMapping(value = "/employeeTimeSheet", method = RequestMethod.GET)
 	public ModelAndView dailytimesheet(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			 Employee employee) {
 
-		return new ModelAndView("timesheet");
+		return new ModelAndView("employeeTimeSheet");
 	}
 	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("timeSheetForm") TimeSheetForm TSForm) {
+	@RequestMapping(value = "/save1", method = RequestMethod.POST)
+	public ModelAndView save1(@ModelAttribute("timeSheetForm") TimeSheetForm TSForm) {
 		System.out.println(TSForm);
 		System.out.println(TSForm.getTimesheetRecords());
 		List<TimeSheet> records = TSForm.getTimesheetRecords();
@@ -239,6 +282,85 @@ public class EmployeeController {
 	
 	}
 	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public ModelAndView save(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			Employee employee, @ModelAttribute("timeSheetForm") TimeSheetForm TSForm) throws ParseException {
+
+		String str = request.getParameter("TSstr");
+		String day = request.getParameter("date");
+
+		ArrayList<TimeSheet> tms = new ArrayList<>();
+
+		String[] timesheets = str.split(",");
+		int tokenCount = timesheets.length;
+
+		for (int j = 0; j < tokenCount; j++) {
+			System.out.println("Split Output: " + timesheets[j]);
+
+			String[] values = timesheets[j].split(":");
+			if (values.length > 2) {
+				TimeSheet t = new TimeSheet();
+				t.setSrNo(1);
+				t.setJobTitle(values[1]);
+				t.setHours(Integer.valueOf(values[2]));
+				t.setStatus(values[3]);
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
+				t.setDate(date);
+				tms.add(t);
+			}
+		}
+
+		empService.insertTimesheet(tms);
+		System.out.println("TimeSheets Inserted Successfully");
+
+		List<TimeSheet> timesheetList = empService.getListTimesheet();
+		for (TimeSheet record : timesheetList) {
+			System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(), record.getStatus());
+		}
+		return new ModelAndView("showTimesheet", "timesheetList", timesheetList);
+	}
+	
+	
+	@RequestMapping(value = "/saveEmployeeTimeSheet", method = RequestMethod.POST)
+	public ModelAndView saveEmployeeTimeSheet(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			Employee employee, @ModelAttribute("timeSheetForm") TimeSheetForm TSForm) throws ParseException {
+		
+		employee = (Employee) session.getAttribute("employee");
+		String str = request.getParameter("TSstr");
+		String day = request.getParameter("date");
+
+		ArrayList<EmployeeTimeSheet> tms = new ArrayList<>();
+
+		String[] employeetimesheets = str.split(",");
+		int tokenCount = employeetimesheets.length;
+
+		for (int j = 0; j < tokenCount; j++) {
+			System.out.println("Split Output: " + employeetimesheets[j]);
+
+			String[] values = employeetimesheets[j].split(":");
+			if (values.length > 2) {
+				EmployeeTimeSheet et = new EmployeeTimeSheet();
+				et.setJobTitle(values[1]);
+				et.setHours(Integer.valueOf(values[2]));
+				et.setStatus(values[3]);
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
+				et.setDate(date);
+				et.setDate(date);
+				et.setEmployee(employee);
+				tms.add(et);
+			}
+		}
+
+		empService.insertEmployeeTimesheet(tms);
+		System.out.println("EmployeeTimeSheets Inserted Successfully");
+
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		for (EmployeeTimeSheet record : employeetimesheetList) {
+			System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(), record.getStatus());
+		}
+		return new ModelAndView("showEmployeeTimeSheet", "timesheetList", employeetimesheetList);
+	}
+	
 	@RequestMapping(value = "/datepickerRow", method = RequestMethod.GET)
 	public ModelAndView datepickerRow(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			 Employee employee) {
@@ -247,19 +369,102 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value = "/employeeTimeSheetRow", method = RequestMethod.GET)
-	public ModelAndView emloyeetimesheet_single(Model model,HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			 Employee employee) {
-		model.addAttribute("timesheet", new TimeSheet());
-		return new ModelAndView("employeeTimeSheetRow");
+	public ModelAndView employeetimesheet_single(Model model,HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@ModelAttribute("employee") Employee employee) {
+		ModelAndView mav = new ModelAndView("employeeTimeSheetRow");
+		employee = (Employee) session.getAttribute("employee");
+		System.out.printf("Name: %s \n", employee.getName());
+		mav.addObject("employee", employee);
+		
+		EmployeeTimeSheet employeeTimeSheet = new EmployeeTimeSheet();
+		employeeTimeSheet.setEmployee(employee);
+		model.addAttribute("employeetimesheet", employeeTimeSheet);
+		
+		return mav;
 	}
 	
-	@RequestMapping(value = "/dailyTimesheetRow", method = RequestMethod.GET)
-	public ModelAndView dailytimesheet_single(Model model,HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			 Employee employee) {
-		model.addAttribute("timesheet", new TimeSheet());
-		return new ModelAndView("timesheetRow");
-	}
+	@RequestMapping(value = "/quickAddEmployeeTimesheetRow", method = RequestMethod.POST) // validating new employee
+	public ModelAndView quickAddEmployeeTimesheet(HttpServletRequest request, HttpServletResponse response,  HttpSession session,
+			@ModelAttribute("employeetimesheet") EmployeeTimeSheet employeetimesheet, BindingResult result, SessionStatus status) {
 
+		boolean error = false;
+		ModelAndView mav = null;
+		Employee employee = (Employee) session.getAttribute("employee");
+		if (error) {
+
+			mav = new ModelAndView("dailyTimesheet");
+			mav.addObject("timesheet", new TimeSheet());
+			return mav;
+		}
+		employeetimesheet.setEmployee(employee);
+		empService.addEmployeeTimesheet(employeetimesheet);
+
+		status.setComplete();
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		for (EmployeeTimeSheet record : employeetimesheetList) {
+			System.out.printf("test %s \t %s \n",  record.getJobTitle(), record.getHours(),record.getStatus());
+		}
+		
+		mav = goHome(request, session);
+		return mav;
+	} 
+	
+	@RequestMapping(value = "/addEmployeeTimesheetRow", method = RequestMethod.POST) // validating new employee
+	public ModelAndView addEmployeeTimesheet(HttpServletRequest request, HttpServletResponse response,  HttpSession session,
+			@ModelAttribute("employeetimesheet") EmployeeTimeSheet employeetimesheet, BindingResult result, SessionStatus status) {
+
+		boolean error = false;
+		ModelAndView mav = null;
+		Employee employee = (Employee) session.getAttribute("employee");
+		if (error) {
+
+			mav = new ModelAndView("dailyTimesheet");
+			mav.addObject("timesheet", new TimeSheet());
+			return mav;
+		}
+		employeetimesheet.setEmployee(employee);
+		empService.addEmployeeTimesheet(employeetimesheet);
+
+		status.setComplete();
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		for (EmployeeTimeSheet record : employeetimesheetList) {
+			System.out.printf("test %s \t %s \n",  record.getJobTitle(), record.getHours(),record.getStatus());
+		}
+		
+		mav = new ModelAndView("showEmployeeTimeSheet", "employeetimesheetList",employeetimesheetList );
+		return mav;
+	}  
+	
+	@RequestMapping(value = "/viewEmployeeTimesheetList", method = RequestMethod.GET) // 
+	public ModelAndView getEmployeeTimesheetList(HttpServletRequest request,  HttpSession session) {
+		
+		Employee employee = (Employee) session.getAttribute("employee");
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		for (EmployeeTimeSheet record : employeetimesheetList) {
+			System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
+		}
+		return new ModelAndView("showEmployeeTimeSheet","employeetimesheetList", employeetimesheetList);
+	}
+	
+	@RequestMapping(value = "/viewDailyEmployeeTimesheetList", method = RequestMethod.GET) // 
+	public ModelAndView getDailyEmployeeTimesheetList(HttpServletRequest request,  HttpSession session) {
+		
+		ModelAndView mav = new ModelAndView("showDailyEmployeeTimeSheet");
+		                                     
+		Employee employee = (Employee) session.getAttribute("employee");
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		List<DailyEmployeeTimeSheet>  dailyemployeetimesheetList = null;
+		if (employeetimesheetList.size()>0) {
+			dailyemployeetimesheetList =  empService.getListDailyEmployeeTimesheet(employee);
+			for (DailyEmployeeTimeSheet record : dailyemployeetimesheetList) {
+				System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
+			}
+			mav.addObject("dailyemployeetimesheetList", dailyemployeetimesheetList);
+		}
+		return mav;
+	}
+	
+	
 	@RequestMapping(value = "/addTimesheetRow", method = RequestMethod.POST) // validating new employee
 	public ModelAndView addTimesheet(HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("timesheet") TimeSheet timesheet, BindingResult result, SessionStatus status) {
@@ -298,23 +503,56 @@ public class EmployeeController {
 	
 	@RequestMapping(value = "/viewDailyTimesheetList", method = RequestMethod.GET) // 
 	public ModelAndView getDailyTimesheetList() {
-
-		List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
-		for (DailyTimeSheet record : dailytimesheetList) {
-			System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
+		
+		ModelAndView mav = new ModelAndView("showDailyTimesheet");
+		List<TimeSheet> timesheetList = empService.getListTimesheet();
+		if (timesheetList.size()>0) {
+			List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
+			for (DailyTimeSheet record : dailytimesheetList) {
+				System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
+			}
+			mav.addObject("dailytimesheetList", dailytimesheetList);
 		}
-		return new ModelAndView("showDailyTimesheet","dailytimesheetList", dailytimesheetList);
+		return mav;
 	}
 	
 	
 	@RequestMapping(value = "/viewDailyTimesheetChart", method = RequestMethod.GET) // 
 	public ModelAndView getDailyTimesheetChart() {
 
+		ModelAndView mav = new ModelAndView("showDailyTimeSheetChart");
+		List<TimeSheet> timesheetList = empService.getListTimesheet();
+		if (timesheetList.size()>0) {
+			List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
+			for (DailyTimeSheet record : dailytimesheetList) {
+				System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
+			}
+			mav.addObject("dataPoints", dailytimesheetList);
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "/viewEmployeeDailyTimesheetChart", method = RequestMethod.GET) // 
+	public ModelAndView getEmployeeDailyTimesheetChart(HttpServletRequest request,  HttpSession session) {
+
 		List<DailyTimeSheet>  dailytimesheetList =  empService.getListDailyTimesheet();
 		for (DailyTimeSheet record : dailytimesheetList) {
 			System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
 		}
-		return new ModelAndView("showDailyTimesheetChart","dataPoints", dailytimesheetList);
+		
+		
+		ModelAndView mav = new ModelAndView("showDailyTimeSheetChart");
+		Employee employee = (Employee) session.getAttribute("employee");
+		List<DailyEmployeeTimeSheet>  dailyemployeetimesheetList = null;
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		if (employeetimesheetList.size()>0) {
+			dailyemployeetimesheetList =  empService.getListDailyEmployeeTimesheet(employee);
+			for (DailyEmployeeTimeSheet record : dailyemployeetimesheetList) {
+				System.out.printf("%s \t %s \n", record.getDate(), record.getHours());
+			}
+			mav.addObject("dataPoints", dailyemployeetimesheetList);
+		}
+		return mav;
 	}
 	
 	
@@ -345,6 +583,83 @@ public class EmployeeController {
 			userModel.addAttribute("msg", "TimeSheet with srNo : " + srNo + " deleted successfully.");
 		} else {
 			userModel.addAttribute("msg", "TimeSheet with srNo : " + srNo + " deletion failed.");
+		}
+		return new ModelAndView("adminIntro");
+	}
+	
+	@RequestMapping(value = "/deleteEmployeeTimeSheet", method = RequestMethod.GET)
+	public ModelAndView deleteEmployeeTimeSheet(HttpServletRequest request, HttpSession session, ModelMap userModel) {
+		int srNo = Integer.parseInt(request.getParameter("id"));
+		int resp = empService.deleteEmployeeTimeSheet(srNo);
+		userModel.addAttribute("TimeSheetDetails", empService.getList());
+		if (resp > 0) {
+			userModel.addAttribute("msg", "TimeSheet with srNo : " + srNo + " deleted successfully.");
+		} else {
+			userModel.addAttribute("msg", "TimeSheet with srNo : " + srNo + " deletion failed.");
+		}
+		
+		Employee employee = (Employee) session.getAttribute("employee");
+		List<EmployeeTimeSheet> employeetimesheetList = empService.getListEmployeeTimesheet(employee);
+		for (EmployeeTimeSheet record : employeetimesheetList) {
+			System.out.printf("%s \t %s \n", record.getJobTitle(), record.getHours(),record.getStatus());
+		}
+		return new ModelAndView("showEmployeeTimeSheet","employeetimesheetList", employeetimesheetList);
+	}
+	
+	@RequestMapping(value = "/objectives", method = RequestMethod.GET)
+	public ModelAndView objectives(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			Employee employee) {
+
+		return new ModelAndView("objectives");
+	}
+
+	@RequestMapping(value = "/saveObj", method = RequestMethod.POST)
+	public ModelAndView saveObjective(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			Employee employee) throws ParseException {
+
+		String str = request.getParameter("Objstr");
+
+		ArrayList<Objective> objs = new ArrayList<>();
+
+		String[] objectives = str.split(",");
+		int tokenCount = objectives.length;
+
+		for (int j = 0; j < tokenCount; j++) {
+			System.out.println("Split Output: " + objectives[j]);
+
+			String[] values = objectives[j].split(":");
+			if (values.length > 2) {
+				Objective t = new Objective();
+				t.setSrNo(1);
+				t.setName(values[1]);
+				t.setDuration(Integer.valueOf(values[2]));
+				t.setType(values[3]);
+				t.setDescription(values[4]);
+				objs.add(t);
+			}
+		}
+
+		empService.insertObjective(objs);
+
+		List<Objective> objectiveList = empService.getObjectives();
+		return new ModelAndView("showObjective", "objectiveList", objectiveList);
+	}
+
+	@RequestMapping(value = "/viewObjectiveList", method = RequestMethod.GET) //
+	public ModelAndView getObjectiveList() {
+		List<Objective> objectiveList = empService.getObjectives();
+		return new ModelAndView("showObjective", "objectiveList", objectiveList);
+	}
+
+	@RequestMapping(value = "/deleteobj", method = RequestMethod.GET)
+	public ModelAndView deleteObjective(HttpServletRequest request, ModelMap userModel) {
+		int objId = Integer.parseInt(request.getParameter("id"));
+		int resp = empService.deleteObjective(objId);
+		userModel.addAttribute("userDetails", empService.getListTimesheet());
+		if (resp > 0) {
+			userModel.addAttribute("msg", "User with id : " + objId + " deleted successfully.");
+		} else {
+			userModel.addAttribute("msg", "User with id : " + objId + " deletion failed.");
 		}
 		return new ModelAndView("adminIntro");
 	}

@@ -25,6 +25,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
+import organisation.model.EmployeeTimeSheet;
+import organisation.model.Objective;
+
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -80,6 +83,8 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 		sessionBuilder.addAnnotatedClasses(Employee.class);
 		sessionBuilder.addAnnotatedClasses(TimeSheet.class);
+		sessionBuilder.addAnnotatedClasses(EmployeeTimeSheet.class);
+		sessionBuilder.addAnnotatedClasses(Objective.class);
 		sessionBuilder.setProperty("hibernate.show_sql", "true");
 		sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "update");
 		sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");

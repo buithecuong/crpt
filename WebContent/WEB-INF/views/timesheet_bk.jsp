@@ -49,8 +49,6 @@ button:hover {
 
 table {
 	border: 1px solid black;
-	table-layout: auto;
-    border-collapse: collapse;
 }
 </style>
 <SCRIPT language="javascript">
@@ -89,6 +87,13 @@ table {
 		element5.type = "text";
 		element5.name = "txtbox[]";
 		cell5.appendChild(element5);
+		
+		var cell6 = row.insertCell(4);
+		
+		var element6 = document.createElement("input");
+		element6.type = "text";
+		element6.name = "txtbox[]";
+		cell6.appendChild(element6);
 
 		tableRowCount = table.rows.length
 
@@ -117,13 +122,16 @@ table {
 	
 	 function timeSheetRecords(tableID) {
 		var listOfObjects = [];
-		var listOfColumns = ['id', 'title', 'hrs', 'status'];
-		var str = '';
+		var listOfColumns = ['id', 'title', 'hrs', 'status', 'date'];
+		
 		 var table = document.getElementById(tableID);
+		 alert ("this alert is working before for loop ")
 		 
 		for (var i = 1, row ; i < table.rows.length; i++) {
 			
 			var objectDict = {};
+			
+			alert ("Alert for row: " + i)
 		   //iterate through rows
 		   //rows would be accessed using the "row" variable assigned in the for loop
 		     // GET THE CELLS COLLECTION OF THE CURRENT ROW.
@@ -133,15 +141,23 @@ table {
             for (var j = 0; j < objCells.length; j++) {
             	
             	var textVal = objCells.item(j).children[0].value
-            	
-            	str += textVal + ':';
-            	//objectDict[listOfColumns[j]] = textVal;
+            	alert ('Column ' + j + '(' + textVal + ')' )
+            	objectDict[listOfColumns[j]] = textVal;
             }
+            console.log('Dict: ', objectDict); 
             
-            str +=', ';
+			 
+		    
+		   
+            alert ("this alert is before add list")
+		   listOfObjects.push(objectDict)   ;
 		   } 
-		   var el = document.getElementById("TSstr");
-		   el.value = str;
+		   
+		   alert ("this alert is working")
+		   console.log('Dict: ',String(listOfObjects)); 
+		   alert ("this alert is working")
+		   
+		return listOfObjects;
 
 	} 
 	 
@@ -156,30 +172,30 @@ table {
 	%><br />
 
 	<form:form name="regForm"
-		onSubmit="timeSheetRecords('TimeSheet')" method="post"
+		onSubmit=" return timeSheetRecords('TimeSheet')" method="post"
 		action="save" modelAttribute="timeSheetForm">
 
-		<input type="button" value="Add Row" onclick="addRow('TimeSheet')" />
+		<input type="button" value="Add Row" onclick="addRow('dataTable')" />
 
 		<input type="button" value="Delete Row"
 			onclick="deleteRow('TimeSheet')" />
 
 		<table id="TimeSheet" width="350px" border="1">
-			
-			<input type="hidden" id="TSstr" name="TSstr" value="">
-			<input type="hidden" id="date" name="date" value="<%=request.getParameter("day")%>">
-			
 			<tr>
 				<th></th>
 				<th>Job_Title</th>
 				<th>Hours</th>
 				<th>Status</th>
+				<th>Date</th>
+
 			</tr>
 			<tr>
 				<td><input type="checkbox" name="chk" /></td>
 				<td><input type="text" name="jobTitle" id="jobTitle" /></td>
 				<td><input type="number" name="hours" id="hours" /></td>
 				<td><input type="text" name="status" id="status" /></td>
+				<td><input type="text" name="dateCreated" id="dateCreated"
+					value="<%=request.getParameter("day")%>" /></td>
 			</tr>
 
 		</table>

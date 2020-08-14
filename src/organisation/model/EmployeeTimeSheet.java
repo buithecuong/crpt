@@ -1,6 +1,7 @@
 package organisation.model;
 
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import organisation.model.Employee;
 
@@ -18,18 +22,24 @@ import organisation.model.Employee;
 @Table(name = "employeetimesheet", uniqueConstraints = { @UniqueConstraint(columnNames = { "srNo" }) })
 public class EmployeeTimeSheet {
 
+	
+
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "srNo", length = 11, nullable = false, unique = true)
 	private int srNo;
 	
-	@ManyToOne
-	@JoinColumn(name ="id")
-	private Employee employee;
-
+	@ManyToOne(cascade = CascadeType.ALL)
 	public Employee getEmployee() {
-	return employee;
+		return employee;
 	}
+	
+	@ManyToOne
+	@JoinColumn(name ="employee_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Employee employee;
+	
 	@Column
 	private String jobTitle;
 	@Column
@@ -42,8 +52,9 @@ public class EmployeeTimeSheet {
 	public EmployeeTimeSheet() {
 	}
 
-	public EmployeeTimeSheet(int srNo, String jobTitle, int hours, String status, Date date) {
+	public EmployeeTimeSheet(Employee employee, int srNo, String jobTitle, int hours, String status, Date date) {
 		super();
+		this.employee = employee;
 		this.srNo = srNo;
 		this.jobTitle = jobTitle;
 		this.hours = hours;
@@ -89,5 +100,10 @@ public class EmployeeTimeSheet {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 }

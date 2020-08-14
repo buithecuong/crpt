@@ -16,6 +16,10 @@ import organisation.model.Employee;
 import organisation.model.SumTimeSheet;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
+import organisation.model.EmployeeTimeSheet;
+import organisation.model.SumEmployeeTimeSheet;
+import organisation.model.DailyEmployeeTimeSheet;
+import organisation.model.Objective;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -43,6 +47,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<DailyTimeSheet> getListDailyTimesheet() {
 		return employeeDao.getAllTimeSheetByDate();
+	}
+	
+	@Transactional
+	@Override
+	public List<DailyEmployeeTimeSheet> getListDailyEmployeeTimesheet(Employee employee) {
+		return employeeDao.getAllEmployeeTimeSheetGroupByDate(employee);
 	}
 	
 	@Transactional
@@ -80,16 +90,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		// Employee is User or Admin
 		if (null != emp) {
 			if (emp.getStatus().equals("admin")) {
-				mav = new ModelAndView("adminIntro");
-				mav.addObject("employee", emp);
-				mav.addObject("firstname", emp.getName());
-				session.setAttribute("employee", emp);
+				mav = new ModelAndView("adminDashboard");				
 			} else {
-				mav = new ModelAndView("intro");
-				mav.addObject("employee", emp);
-				mav.addObject("firstname", emp.getName());
-				session.setAttribute("employee", emp);
+				mav = new ModelAndView("userDashboard");				
 			}
+			mav.addObject("employee", emp);
+			mav.addObject("firstname", emp.getName());
+			session.setAttribute("employee", emp);
 
 		} else {
 			mav = new ModelAndView("login");
@@ -135,8 +142,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Transactional
 	@Override
+	public String addEmployeeTimesheet(EmployeeTimeSheet employeetimesheet) {
+		employeeDao.addEmployeeTimesheet(employeetimesheet);		          
+		return employeetimesheet.getJobTitle();
+	}
+	
+	@Transactional
+	@Override
 	public List<TimeSheet> getListTimesheet() {
 		return employeeDao.getAllTimeSheets();
+	}
+	
+	@Transactional
+	@Override
+	public List<EmployeeTimeSheet> getListEmployeeTimesheet(Employee employee) {
+		return employeeDao.getAllTimeSheetByEmployee(employee);
+	}
+	
+	@Transactional
+	@Override
+	public List<EmployeeTimeSheet> getListEmployeeTimesheetByCurrentDate(Employee employee) {
+		return employeeDao.getAllEmployeeTimeSheetByCurrentDate(employee);
 	}
 	
 	@Transactional
@@ -151,6 +177,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public int deleteTimeSheet(int srNo) {
 		int deletedid = employeeDao.deleteTimeSheet(srNo);
+		return deletedid;
+	}
+	
+	@Override
+	public int deleteEmployeeTimeSheet(int srNo) {
+		int deletedid = employeeDao.deleteEmployeeTimeSheet(srNo);
 		return deletedid;
 	}
 
@@ -170,4 +202,47 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<SumTimeSheet> getTotalTimesheetHours() {
 		return employeeDao.getTotalTimeSheetHours();
 	}
+	
+	
+	@Override
+	public List<SumEmployeeTimeSheet> getEmployeeTotalTimesheetHours(Employee employee) {
+		return employeeDao.getEmployeeTotalTimeSheetHours(employee);
+	}
+	
+	@Override
+	public Boolean insertTimesheet(List<TimeSheet> tms) {
+		Boolean insertStatus = employeeDao.insertTimeSheet(tms);
+		return insertStatus;
+		
+	}
+	
+	@Override
+	public Boolean insertEmployeeTimesheet(List<EmployeeTimeSheet> tms) {
+		Boolean insertStatus = employeeDao.insertEmployeeTimeSheet(tms);
+		return insertStatus;
+		
+	}
+	
+	@Override
+	public Boolean insertObjective(List<Objective> objs) {
+		Boolean insertStatus = employeeDao.insertObjective(objs);
+		return insertStatus;
+	}
+
+	@Override
+	public int deleteObjective(int id) {
+		return employeeDao.deleteObjective(id);
+	}
+
+	@Override
+	public List<Objective> getObjectives() {
+		return employeeDao.getObjectives();
+	}
+
+	@Override
+	public int updateObjective(Objective obj) {
+		return employeeDao.updateObjective(obj);
+	}
+	
+	
 }

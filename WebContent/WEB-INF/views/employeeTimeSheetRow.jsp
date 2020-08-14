@@ -61,10 +61,14 @@ table {
 
 	<%
 		out.println("The timesheet for the day " + request.getParameter("day"));
+        
+        
 	%><br />
+	
+	<p> Employee Name : ${employee.getName()}</p>
 
 	<form:form name="regForm"  method="post"
-		action="addTimesheetRow" modelAttribute="timesheet">
+		action="addEmployeeTimesheetRow" modelAttribute="employeetimesheet">
 
 		
 		<table id="TimeSheet" width="350px" border="1">

@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
- <form action="dailyTimesheet">
+ <form action="employeeTimeSheet">
     <label>Choose Day</label>
     
     <input type="date" name="day" id="datepicker"/>
