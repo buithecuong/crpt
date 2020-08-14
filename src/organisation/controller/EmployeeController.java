@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import organisation.employeeService.EmployeeService;
 import organisation.timesheetService.TimesheetService;
 import organisation.model.Employee;
+import organisation.model.Objective;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
 import organisation.model.TimeSheetForm;
@@ -157,6 +158,19 @@ public class EmployeeController {
 		userModel.addAttribute("employee", employee);
 		return new ModelAndView("edit");
 	}
+<<<<<<< Updated upstream
+=======
+
+	@RequestMapping(value = "/editts", method = RequestMethod.GET)
+	public ModelAndView getTimesheetDetails(HttpServletRequest request, HttpSession session, ModelMap userModel,
+			@ModelAttribute("timesheet") TimeSheet timesheet) {
+		int timesheetId = Integer.parseInt(request.getParameter("id"));
+		session = request.getSession(true);
+		timesheet = empService.TimesheetDetails(timesheetId);
+		userModel.addAttribute("timesheet", timesheet);
+		return new ModelAndView("editts");
+	}
+>>>>>>> Stashed changes
 
 	@RequestMapping(value = "/updateSave", method = RequestMethod.POST)
 	public ModelAndView updateUser(HttpServletRequest request, HttpSession session, HttpServletResponse response,
@@ -177,6 +191,22 @@ public class EmployeeController {
 		}
 		return new ModelAndView("adminIntro");
 	}
+<<<<<<< Updated upstream
+=======
+
+	@RequestMapping(value = "/deletets", method = RequestMethod.GET)
+	public ModelAndView deleteTimeSheet(HttpServletRequest request, ModelMap userModel) {
+		int tsId = Integer.parseInt(request.getParameter("id"));
+		int resp = empService.deleteTimeSheet(tsId);
+		userModel.addAttribute("userDetails", empService.getListTimesheet());
+		if (resp > 0) {
+			userModel.addAttribute("msg", "User with id : " + tsId + " deleted successfully.");
+		} else {
+			userModel.addAttribute("msg", "User with id : " + tsId + " deletion failed.");
+		}
+		return new ModelAndView("adminIntro");
+	}
+>>>>>>> Stashed changes
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
@@ -234,8 +264,16 @@ public class EmployeeController {
 
 	@RequestMapping(value = "/addTimesheetRow", method = RequestMethod.POST) // validating new employee
 	public ModelAndView addTimesheet(HttpServletRequest request, HttpServletResponse response,
+<<<<<<< Updated upstream
 			@ModelAttribute("timesheet") TimeSheet timesheet, BindingResult result, SessionStatus status) {
 
+=======
+			@ModelAttribute("timesheet") TimeSheet timesheet, BindingResult result, SessionStatus status)
+			throws ParseException {
+		String day = request.getParameter("date");
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
+		timesheet.setDate(date);
+>>>>>>> Stashed changes
 		boolean error = false;
 		ModelAndView mav = null;
 
@@ -324,6 +362,64 @@ public class EmployeeController {
 		}
 		
 		return new ModelAndView("show_contact", "contactForm", contactForm);
+	}
+	
+	@RequestMapping(value = "/objectives", method = RequestMethod.GET)
+	public ModelAndView objectives(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			Employee employee) {
+
+		return new ModelAndView("objectives");
+	}
+
+	@RequestMapping(value = "/saveObj", method = RequestMethod.POST)
+	public ModelAndView saveObjective(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			Employee employee) throws ParseException {
+
+		String str = request.getParameter("Objstr");
+
+		ArrayList<Objective> objs = new ArrayList<>();
+
+		String[] objectives = str.split(",");
+		int tokenCount = objectives.length;
+
+		for (int j = 0; j < tokenCount; j++) {
+			System.out.println("Split Output: " + objectives[j]);
+
+			String[] values = objectives[j].split(":");
+			if (values.length > 2) {
+				Objective t = new Objective();
+				t.setSrNo(1);
+				t.setName(values[1]);
+				t.setDuration(Integer.valueOf(values[2]));
+				t.setType(values[3]);
+				t.setDescription(values[4]);
+				objs.add(t);
+			}
+		}
+
+		empService.insertObjective(objs);
+
+		List<Objective> objectiveList = empService.getObjectives();
+		return new ModelAndView("showObjective", "objectiveList", objectiveList);
+	}
+	
+	@RequestMapping(value = "/viewObjectiveList", method = RequestMethod.GET) //
+	public ModelAndView getObjectiveList() {
+		List<Objective> objectiveList = empService.getObjectives();
+		return new ModelAndView("showObjective", "objectiveList", objectiveList);
+	}
+	
+	@RequestMapping(value = "/deleteobj", method = RequestMethod.GET)
+	public ModelAndView deleteObjective(HttpServletRequest request, ModelMap userModel) {
+		int objId = Integer.parseInt(request.getParameter("id"));
+		int resp = empService.deleteObjective(objId);
+		userModel.addAttribute("userDetails", empService.getListTimesheet());
+		if (resp > 0) {
+			userModel.addAttribute("msg", "User with id : " + objId + " deleted successfully.");
+		} else {
+			userModel.addAttribute("msg", "User with id : " + objId + " deletion failed.");
+		}
+		return new ModelAndView("adminIntro");
 	}
 
 }

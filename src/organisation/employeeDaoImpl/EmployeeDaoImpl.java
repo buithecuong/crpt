@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 
 import organisation.employeeDao.EmployeeDao;
 import organisation.model.Employee;
+import organisation.model.Objective;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
 
@@ -190,5 +191,105 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
     }
 	
+<<<<<<< Updated upstream
+=======
+	
+	public Boolean insertTimeSheet(List<TimeSheet> tms) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		for(TimeSheet t : tms)
+		{
+			session.save(t);
+			 if (tms.indexOf(t) % 2 == 0 ) { //20, same as the JDBC batch size
+			        //flush a batch of inserts and release memory:
+			        session.flush();
+			        session.clear();
+			    }
+		}
+		session.flush();
+        session.clear();
+		tx.commit();
+		session.close();
+		return true;
+	}
+
+
+	@Override
+	public TimeSheet getTimeSheetDetails(int id) {
+		Session session = sessionFactory.openSession();
+		TimeSheet ts = session.load(TimeSheet.class, id);
+        return ts;
+	}
+
+	@Override
+	public int deleteTimeSheetDetails(int id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		TimeSheet ts =(TimeSheet)session.get(TimeSheet.class,id);
+        
+		session.delete(ts);
+		session.flush();
+		tx.commit();
+		session.close();
+		return id;
+	}
+
+	@Override
+	public int deleteObjective(int id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Objective obj =(Objective)session.get(Objective.class,id);
+        
+		session.delete(obj);
+		session.flush();
+		tx.commit();
+		session.close();
+		return id;
+	}
+	
+	public Boolean insertObjective(List<Objective> objs) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		for(Objective obj : objs)
+		{
+			session.save(obj);
+			 if (objs.indexOf(obj) % 2 == 0 ) { //20, same as the JDBC batch size
+			        //flush a batch of inserts and release memory:
+			        session.flush();
+			        session.clear();
+			    }
+		}
+		session.flush();
+        session.clear();
+		tx.commit();
+		session.close();
+		return true;
+	}
+	
+	@Override
+	public List<Objective> getObjectives() {
+		Session session = sessionFactory.openSession();
+		
+		@SuppressWarnings("unchecked")
+		
+		List<Objective> objectiveList = session.createQuery("from Objective order by id").list();
+		session.close();
+		return objectiveList;
+	}
+	
+	@Override
+	public int updateObjective(Objective obj) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(obj);
+		session.flush();
+		tx.commit();
+		session.close();
+		return obj.getSrNo();
+	}
+	
+>>>>>>> Stashed changes
 }
 

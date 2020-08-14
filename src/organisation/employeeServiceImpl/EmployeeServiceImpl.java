@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import organisation.employeeDao.EmployeeDao;
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
+import organisation.model.Objective;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
 
@@ -143,4 +144,48 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message) {
 		return employeeDao.sendEmail(recepients, bccRecepients, subject, message);
 	}
+<<<<<<< Updated upstream
+=======
+
+	@Override
+	public Boolean insertTimesheet(List<TimeSheet> tms) {
+		Boolean insertStatus = employeeDao.insertTimeSheet(tms);
+		return insertStatus;
+		
+	}
+	
+	@Transactional
+	@Override
+	public TimeSheet TimesheetDetails(int id) {
+		return employeeDao.getTimeSheetDetails(id);
+		
+	}
+
+	@Override
+	public int deleteTimeSheet(int id) {
+		return employeeDao.deleteTimeSheetDetails(id);
+	}
+
+	@Override
+	public Boolean insertObjective(List<Objective> objs) {
+		Boolean insertStatus = employeeDao.insertObjective(objs);
+		return insertStatus;
+	}
+
+	@Override
+	public int deleteObjective(int id) {
+		return employeeDao.deleteObjective(id);
+	}
+
+	@Override
+	public List<Objective> getObjectives() {
+		return employeeDao.getObjectives();
+	}
+
+	@Override
+	public int updateObjective(Objective obj) {
+		return employeeDao.updateObjective(obj);
+	}
+	
+>>>>>>> Stashed changes
 }

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import organisation.model.Employee;
+import organisation.model.Objective;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
 
@@ -38,4 +39,18 @@ public interface EmployeeService {
 	
 	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message);
 
+<<<<<<< Updated upstream
+=======
+	public TimeSheet TimesheetDetails(int id) ;
+	
+	public int deleteTimeSheet(int id);
+	
+	public Boolean insertObjective(List<Objective> objs);
+	
+	public int deleteObjective(int id);
+	
+	public List<Objective> getObjectives();
+	
+	public int updateObjective(Objective obj);
+>>>>>>> Stashed changes
 }

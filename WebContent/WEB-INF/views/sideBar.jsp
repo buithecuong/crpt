@@ -63,6 +63,15 @@
               </p>
             </a>
           </li>
+           <li class="nav-item">
+            <a href="objectives" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Objectives
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
           <li class="nav-item has-treeview">
             <a href="timesheet_bk" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
@@ -88,6 +97,15 @@
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>
                 List Timesheets
+                <span class="badge badge-info right">2</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="viewObjectiveList" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                List Objectives
                 <span class="badge badge-info right">2</span>
               </p>
             </a>
