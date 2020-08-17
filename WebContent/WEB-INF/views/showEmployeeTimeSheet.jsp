@@ -78,12 +78,12 @@ td
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT DailyTimesheet</h1>
+            <h1 class="m-0 text-dark">CRPT Timesheet</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">Daily TimeSheet</li>
+              <li class="breadcrumb-item active">TimeSheet</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -99,7 +99,7 @@ td
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daily Timesheet History</h3>
+                  <h3 class="card-title">Timesheet History</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
@@ -109,14 +109,21 @@ td
                      <tr>
                      <th> Order#</th>
                        <th>Date</th>
-                       <th>Hours</th>                  
+                       <th>Job Title</th>
+                       <th>Hours</th>
+                       <th>Status</th>                       
+                     <th>Username</th>
+                       <th>Edit/Delete</th>
                      </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
+                     <c:forEach items="${employeetimesheetList}" var="record" varStatus="loop">
                      <tr>
-                     
-                     <td width="60" align="center">${loop.index+1}</td>
+                       <td width="60" align="center">${loop.index+1}</td>
                        <td width="60" align="center">${record.date}</td>
+                       <td width="60" align="center">${record.jobTitle}</td>
                        <td width="60" align="center">${record.hours}</td>
+                       <td width="60" align="center">${record.status}</td>
+                       <td width="60" align="center">${record.employee.username}</td>
+                       <td width="60" align="center"><a href="editEmployeeTimeSheet?id=${record.srNo}">Edit</a>/<a href="deleteEmployeeTimeSheet?id=${record.srNo}" onclick="return confirm('Do you really want to delete?')">Delete</a></td>
                      </tr>
                   </c:forEach>
                 </table>

@@ -18,11 +18,11 @@
   <form modelAttribute="employee"
 			action="registerProcess" onSubmit=" return formValidation();" method="post">
       <hr>
-    <div class="accounttype">
-      <input type="radio" value="None" id="radioOne" name="account" checked/>
-      <label for="radioOne" class="radio" chec>Personal</label>
-      <input type="radio" value="None" id="radioTwo" name="account" />
-      <label for="radioTwo" class="radio">Company</label>
+    <div class="team">
+      <input type="radio" value="HR" id="radioOne" name="team" />
+      <label for="radioOne" class="radio" chec>HR</label>
+      <input type="radio" value="Engineer" id="radioTwo" name="team" checked/>
+      <label for="radioTwo" class="radio">Engineer</label>
     </div>
   <hr>
   <label id="icon" for="name"><i class="icon-user"></i></label>
@@ -40,6 +40,8 @@
     <label for="admin" class="radio" chec>Admin</label>
     <input type="radio" value="user" id="user" name="status" />
     <label for="user" class="radio">User</label>
+    <input type="radio" value="manager" id="manager" name="status" />
+    <label for="manager" class="radio">Manager</label>
    </div> 
    <p>By clicking Register, you agree on our <a href="#">terms and condition</a>.</p>
    <label>

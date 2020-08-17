@@ -9,30 +9,30 @@ body {
 	background-color: yellow;
 	}
 </style>
-<p>Employee: ${employee}</p>
-<center><h1>Edit Employee</h1></center>
+<p>Employee Objective: ${employeeobjective}</p>
+<center><h1>Edit Objective</h1></center>
 
-<form:form method="POST" modelAttribute="employee" action="updateSave">
+<form:form method="POST" modelAttribute="employeeobjective" action="updateEmployeeObj">
 	<table align= "center">
 		<tr>
-			<td>Id :</td>
-			<td><form:input path="id" /></td>
+			<td>srNo :</td>
+			<td><form:input path="srNo" /></td>
 		</tr>
 		<tr>
 			<td>Name :</td>
 			<td><form:input path="name" /></td>
 		</tr>
 		<tr>
-			<td>Username :</td>
-			<td><form:input path="username" /></td>
+			<td>Duration :</td>
+			<td><form:input path="duration" /></td>
 		</tr>
 		<tr>
-			<td>Password :</td>
-			<td><form:input path="password" /></td>
+			<td>Type :</td>
+			<td><form:input path="type" /></td>
 		</tr>
 		<tr>
-			<td>Team :</td>
-			<td><form:input path="team" /></td>
+			<td>Description :</td>
+			<td><form:input path="description" /></td>
 		</tr>
 		<tr>
 			<td>Status :</td>

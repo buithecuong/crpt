@@ -16,37 +16,46 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	padding-top: 4em;
-	font-family: Georgia, "Times New Roman", Times, serif;
-	color: purple;
-	background-color: yellow;
-	
-	}
-	div, p, th, td
-{
-    font-size: 14px;
-}
-table{
-      border: solid 1px #000000;
-       border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-      }
-      
-th
-{
-    background-color: blue;
-    color: white;
-    padding: 10px;
-}
+  <script type="text/javascript">
+window.onload = function() {
+ 
+var dps = [];
+<c:if test="${error == null}">
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "dark1", "dark2"
+	animationEnabled: true,
+	title: {
+		text: "Daily Timesheet Historical"
+	},
+	data: [{
+		type: "column",
+		dataPoints: dps
+	    
+	}]
+});
+</c:if>
+ 
+var xValue;
+var yValue;
+ 
+<c:forEach items="${dataPoints}" var="dataPoint">
+	yValue = parseInt("${dataPoint.hours}");
+	xValue = new Date("${dataPoint.date}");
+	xValue.setDate(xValue.getDate() + 1)
+	dps.push({
+		x : xValue,
+		y : yValue,
+	});		
+</c:forEach>	
 
-td
-{
-    padding: 5px;
+ 
+<c:if test="${error == null}">
+chart.render();
+</c:if>
+ 
 }
-</style>
+</script>
+
 </head>
 <!--
 `body` tag options:
@@ -78,12 +87,12 @@ td
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT DailyTimesheet</h1>
+            <h1 class="m-0 text-dark">CRPT Timesheet</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">Daily TimeSheet</li>
+              <li class="breadcrumb-item active">TimeSheet</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -99,32 +108,18 @@ td
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daily Timesheet History</h3>
+                  <h3 class="card-title">Submit working hours/date</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
               <div class="card-body">
-                 <center><h1>List of Timesheet</h1></center>
-                   <table border=1 frame=void rules=rows class="table" style="width: 300px" align="center">
-                     <tr>
-                     <th> Order#</th>
-                       <th>Date</th>
-                       <th>Hours</th>                  
-                     </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
-                     <tr>
-                     
-                     <td width="60" align="center">${loop.index+1}</td>
-                       <td width="60" align="center">${record.date}</td>
-                       <td width="60" align="center">${record.hours}</td>
-                     </tr>
-                  </c:forEach>
-                </table>
-                <br>
-                   <br>   <br>   <br>   <br>   
-                <center>
-                    <a href="welcomeAdmin">HOME </a>
-                </center>
+                <c:if test="${error != null}">
+					<div  style='width: 50%; margin-left: auto; margin-right: auto; margin-top: 200px; text-align: center;'>${error}</div>
+				</c:if>
+				<c:if test="${error == null}">
+				<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+				</c:if>
+				<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                </div>
             </div>
             <!-- /.card -->

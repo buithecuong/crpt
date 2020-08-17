@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,8 +36,6 @@ input[type=text] {
 
 td {
 	margin: 8px 0;
-	
-	
 }
 
 button:hover {
@@ -69,8 +67,8 @@ table {
 		element1.name = "chkbox[]";
 		cell1.appendChild(element1);
 
-		/* var cell2 = row.insertCell(1);
-		cell2.innerHTML = rowCount; */
+		/*  var cell2 = row.insertCell(1);
+		cell2.innerHTML = rowCount;  */
 
 		var cell3 = row.insertCell(1);
 		var element3 = document.createElement("input");
@@ -80,7 +78,7 @@ table {
 
 		var cell4 = row.insertCell(2);
 		var element4 = document.createElement("input");
-		element4.type = "text";
+		element4.type = "number";
 		element4.name = "txtbox[]";
 		cell4.appendChild(element4);
 
@@ -89,6 +87,13 @@ table {
 		element5.type = "text";
 		element5.name = "txtbox[]";
 		cell5.appendChild(element5);
+		
+		var cell6 = row.insertCell(4);
+		
+		var element6 = document.createElement("input");
+		element6.type = "text";
+		element6.name = "txtbox[]";
+		cell6.appendChild(element6);
 
 		tableRowCount = table.rows.length
 
@@ -114,41 +119,85 @@ table {
 			alert(e);
 		}
 	}
+	
+	 function timeSheetRecords(tableID) {
+		var listOfObjects = [];
+		var listOfColumns = ['id', 'title', 'hrs', 'status', 'date'];
+		
+		 var table = document.getElementById(tableID);
+		 alert ("this alert is working before for loop ")
+		 
+		for (var i = 1, row ; i < table.rows.length; i++) {
+			
+			var objectDict = {};
+			
+			alert ("Alert for row: " + i)
+		   //iterate through rows
+		   //rows would be accessed using the "row" variable assigned in the for loop
+		     // GET THE CELLS COLLECTION OF THE CURRENT ROW.
+            var objCells = table.rows.item(i).cells;
+
+            // LOOP THROUGH EACH CELL OF THE CURENT ROW TO READ CELL VALUES.
+            for (var j = 0; j < objCells.length; j++) {
+            	
+            	var textVal = objCells.item(j).children[0].value
+            	alert ('Column ' + j + '(' + textVal + ')' )
+            	objectDict[listOfColumns[j]] = textVal;
+            }
+            console.log('Dict: ', objectDict); 
+            
+			 
+		    
+		   
+            alert ("this alert is before add list")
+		   listOfObjects.push(objectDict)   ;
+		   } 
+		   
+		   alert ("this alert is working")
+		   console.log('Dict: ',String(listOfObjects)); 
+		   alert ("this alert is working")
+		   
+		return listOfObjects;
+
+	} 
+	 
+	 
+	 
 </SCRIPT>
 <body>
 
 
+	<%
+		out.println("The timesheet for the day " + request.getParameter("day"));
+	%><br />
 
-	<form:form name="regForm" method="post" action="save" modelAttribute="timeSheetForm">
-
-		<%
-			out.println("The timesheet for the day " + request.getParameter("day"));
-		%><br />
+	<form:form name="regForm"
+		onSubmit=" return timeSheetRecords('TimeSheet')" method="post"
+		action="save" modelAttribute="timeSheetForm">
 
 		<input type="button" value="Add Row" onclick="addRow('dataTable')" />
 
 		<input type="button" value="Delete Row"
-			onclick="deleteRow('dataTable')" />
+			onclick="deleteRow('TimeSheet')" />
 
-		<table id="dataTable" width="350px" border="1">
+		<table id="TimeSheet" width="350px" border="1">
 			<tr>
 				<th></th>
 				<th>Job_Title</th>
 				<th>Hours</th>
 				<th>Status</th>
+				<th>Date</th>
+
 			</tr>
-			<c:forEach items="${timeSheetForm.timeSheetRecords}" var="timeSheet">
-				<tr>
-					<td><input type="checkbox" name="chk" /></td>
-					<td><input name="timeSheet[${counter.index}].jobTitle"
-						value="${timeSheet.jobTitle}" /></td>
-					<td><input name="timeSheet[${counter.index}].hours"
-						value="${timeSheet.hours}" /></td>
-					<td><input name="timeSheet[${counter.index}].status"
-						value="${timeSheet.status}" /></td>
-				</tr>
-			</c:forEach>
-			
+			<tr>
+				<td><input type="checkbox" name="chk" /></td>
+				<td><input type="text" name="jobTitle" id="jobTitle" /></td>
+				<td><input type="number" name="hours" id="hours" /></td>
+				<td><input type="text" name="status" id="status" /></td>
+				<td><input type="text" name="dateCreated" id="dateCreated"
+					value="<%=request.getParameter("day")%>" /></td>
+			</tr>
+
 		</table>
 		<br />
 		<input type="submit" value="Save" />

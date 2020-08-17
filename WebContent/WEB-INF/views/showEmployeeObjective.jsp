@@ -78,12 +78,12 @@ td
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT DailyTimesheet</h1>
+            <h1 class="m-0 text-dark">CRPT Employee Objectives</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">Daily TimeSheet</li>
+              <li class="breadcrumb-item active">Objective</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -99,31 +99,40 @@ td
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daily Timesheet History</h3>
+                  <h3 class="card-title">Objective History</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
               <div class="card-body">
-                 <center><h1>List of Timesheet</h1></center>
+                 <center><h1>List of Objective</h1></center>
                    <table border=1 frame=void rules=rows class="table" style="width: 300px" align="center">
                      <tr>
-                     <th> Order#</th>
-                       <th>Date</th>
-                       <th>Hours</th>                  
+                     <th>Order</th>
+                       <th>UserName</th>
+                       <th>Name</th>
+                       <th>Duration</th>
+                       <th>Type</th>
+                       <th>Description</th>
+                       <th>Status</th>
+                       <th>Edit/Delete</th>
                      </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
+                     <c:forEach items="${employeeObjectiveList}" var="record" varStatus="loop">
                      <tr>
-                     
-                     <td width="60" align="center">${loop.index+1}</td>
-                       <td width="60" align="center">${record.date}</td>
-                       <td width="60" align="center">${record.hours}</td>
+                       <td width="60" align="center">${loop.index+1}</td>
+                       <td width="60" align="center">${record.employee.username}</td>
+                       <td width="60" align="center">${record.name}</td>
+                       <td width="60" align="center">${record.duration}</td>
+                       <td width="60" align="center">${record.type}</td>
+                       <td width="60" align="center">${record.description}</td>
+                       <td width="60" align="center">${record.status}</td>
+                       <td width="60" align="center"><a href="editEmployeeObj?id=${record.srNo}">Edit</a>/<a href="deleteEmployeeObj?id=${record.srNo}" onclick="return confirm('Do you really want to delete?')">Delete</a></td>
                      </tr>
                   </c:forEach>
                 </table>
                 <br>
                    <br>   <br>   <br>   <br>   
                 <center>
-                    <a href="welcomeAdmin">HOME </a>
+                    <a href="home">HOME </a>
                 </center>
                </div>
             </div>

@@ -29,7 +29,7 @@ form {
 }
 
 input[type=text] {
-	width: 100%;
+	width: 300px;
 	display: inline-block;
 	box-sizing: border-box;
 }
@@ -117,7 +117,6 @@ table {
 	
 	 function timeSheetRecords(tableID) {
 		var listOfObjects = [];
-		var listOfColumns = ['id', 'title', 'hrs', 'status'];
 		var str = '';
 		 var table = document.getElementById(tableID);
 		 
@@ -140,7 +139,7 @@ table {
             
             str +=', ';
 		   } 
-		   var el = document.getElementById("TSstr");
+		   var el = document.getElementById("Objstr");
 		   el.value = str;
 
 	} 
@@ -156,30 +155,34 @@ table {
 	%><br />
 
 	<form:form name="regForm"
-		onSubmit="timeSheetRecords('TimeSheet')" method="post"
-		action="save" modelAttribute="timeSheetForm">
+		onSubmit="timeSheetRecords('Objective')" method="post"
+		action="saveEmployeeObj">
 
-		<input type="button" value="Add Row" onclick="addRow('TimeSheet')" />
+		<input type="button" value="Add Row" onclick="addRow('Objective')" />
 
 		<input type="button" value="Delete Row"
-			onclick="deleteRow('TimeSheet')" />
+			onclick="deleteRow('Objective')" />
 
-		<table id="TimeSheet" width="350px" border="1">
+		<table id="Objective" width="350px" border="1">
 			
-			<input type="hidden" id="TSstr" name="TSstr" value="">
-			<input type="hidden" id="date" name="date" value="<%=request.getParameter("day")%>">
+			<input type="hidden" id="Objstr" name="Objstr" value="">
+
 			
 			<tr>
 				<th></th>
-				<th>Job_Title</th>
-				<th>Hours</th>
-				<th>Status</th>
+				<th>Name</th>
+				<th>Duration</th>
+				<th>Type</th>
+				<th>Description</th>
+                <th>Status</th>
 			</tr>
 			<tr>
 				<td><input type="checkbox" name="chk" /></td>
-				<td><input type="text" name="jobTitle" id="jobTitle" /></td>
-				<td><input type="number" name="hours" id="hours" /></td>
-				<td><input type="text" name="status" id="status" /></td>
+				<td><input type="text" name="name" id="name" /></td>
+				<td><input type="number" name="duration" id="duration" /></td>
+				<td><input type="text" name="type" id="type" /></td>
+				<td><input type="text" name="description" id="description" /></td>                                
+                <td><input type="text" name="status" id="status" /></td>
 			</tr>
 
 		</table>

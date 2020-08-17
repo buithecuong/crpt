@@ -16,37 +16,6 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	padding-top: 4em;
-	font-family: Georgia, "Times New Roman", Times, serif;
-	color: purple;
-	background-color: yellow;
-	
-	}
-	div, p, th, td
-{
-    font-size: 14px;
-}
-table{
-      border: solid 1px #000000;
-       border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-      }
-      
-th
-{
-    background-color: blue;
-    color: white;
-    padding: 10px;
-}
-
-td
-{
-    padding: 5px;
-}
-</style>
 </head>
 <!--
 `body` tag options:
@@ -61,14 +30,14 @@ td
 <div class="wrapper">
   <!-- Navbar -->
   <div id="header">
-    <jsp:include page="navBar.jsp"/>
+  
 </div>
  
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <div id="header">
-    <jsp:include page="sideBar.jsp"/>
+   
 </div>
 
   <!-- Content Wrapper. Contains page content -->
@@ -78,12 +47,12 @@ td
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT DailyTimesheet</h1>
+            <h1 class="m-0 text-dark">CRPT Timesheet</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">Daily TimeSheet</li>
+              <li class="breadcrumb-item active">TimeSheet</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -99,40 +68,54 @@ td
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daily Timesheet History</h3>
+                  <h3 class="card-title">Submit working hours/date</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
               <div class="card-body">
-                 <center><h1>List of Timesheet</h1></center>
-                   <table border=1 frame=void rules=rows class="table" style="width: 300px" align="center">
-                     <tr>
-                     <th> Order#</th>
-                       <th>Date</th>
-                       <th>Hours</th>                  
-                     </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
-                     <tr>
-                     
-                     <td width="60" align="center">${loop.index+1}</td>
-                       <td width="60" align="center">${record.date}</td>
-                       <td width="60" align="center">${record.hours}</td>
-                     </tr>
-                  </c:forEach>
+                <form:form name="regForm" method="post" action="save" modelAttribute="timeSheetForm">
+
+                <%
+                    out.println("The timesheet for the day " + request.getParameter("day"));
+                %><br />
+
+                <input type="button" value="Add Row" onclick="addRow('dataTable')" />
+
+                <input type="button" value="Delete Row"
+                    onclick="deleteRow('dataTable')" />
+
+                <table id="dataTable" width="350px" border="1">
+                    <tr>
+                        <th></th>
+                        <th>Job_Title</th>
+                        <th>Hours</th>
+                        <th>Status</th>
+                    </tr>
+                    <c:forEach items="${timeSheetForm.timeSheetRecords}" var="timeSheet">
+                        <tr>
+                            <td><input type="checkbox" name="chk" /></td>
+                            <td><input name="timeSheet[${counter.index}].jobTitle"
+                                value="${timeSheet.jobTitle}" /></td>
+                            <td><input name="timeSheet[${counter.index}].hours"
+                                value="${timeSheet.hours}" /></td>
+                            <td><input name="timeSheet[${counter.index}].status"
+                                value="${timeSheet.status}" /></td>
+                        </tr>
+                    </c:forEach>
+                    
                 </table>
-                <br>
-                   <br>   <br>   <br>   <br>   
-                <center>
-                    <a href="welcomeAdmin">HOME </a>
-                </center>
+                <br />
+                <input type="submit" value="Save" />
+                </form:form>
                </div>
             </div>
             <!-- /.card -->
 
             
           </div>
-          
-          <!-- /.col-md-6 -->
+          <div class="col-lg-6">
+          <h1 class="m-0 text-dark">History</h1>
+          </div>
           <!-- /.col-md-6 -->
         </div>
         <!-- /.row -->
@@ -151,7 +134,7 @@ td
 
   <!-- Main Footer -->
    <div id="header">
-    <jsp:include page="footer.jsp"/>
+    
 </div>
 </div>
 <!-- ./wrapper -->

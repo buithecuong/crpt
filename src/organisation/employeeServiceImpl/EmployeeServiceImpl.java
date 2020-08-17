@@ -13,8 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 import organisation.employeeDao.EmployeeDao;
 import organisation.employeeService.EmployeeService;
 import organisation.model.Employee;
+import organisation.model.SumTimeSheet;
 import organisation.model.TimeSheet;
 import organisation.model.DailyTimeSheet;
+import organisation.model.EmployeeTimeSheet;
+import organisation.model.SumEmployeeTimeSheet;
+import organisation.model.DailyEmployeeTimeSheet;
+import organisation.model.Objective;
+import organisation.model.EmployeeObjective;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -38,17 +44,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	
-	@Transactional
-	@Override
-	public List<DailyTimeSheet> getListDailyTimesheet() {
-		return employeeDao.getAllTimeSheetByDate();
-	}
-	
-	@Transactional
-	@Override
-	public List<TimeSheet> getTimeSheetList() {
-		return employeeDao.getAllTimeSheets();
-	}
 	
 
 
@@ -79,16 +74,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 		// Employee is User or Admin
 		if (null != emp) {
 			if (emp.getStatus().equals("admin")) {
-				mav = new ModelAndView("adminIntro");
-				mav.addObject("employee", emp);
-				mav.addObject("firstname", emp.getName());
-				session.setAttribute("employee", emp);
-			} else {
-				mav = new ModelAndView("intro");
-				mav.addObject("employee", emp);
-				mav.addObject("firstname", emp.getName());
-				session.setAttribute("employee", emp);
+				mav = new ModelAndView("adminDashboard");				
 			}
+			else if (emp.getStatus().equals("manager")) {
+				mav = new ModelAndView("managerDashboard");				
+			}
+			else {
+				mav = new ModelAndView("userDashboard");				
+			}
+			session.setAttribute("employee", emp);
 
 		} else {
 			mav = new ModelAndView("login");
@@ -124,6 +118,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		return mav;
 	}
+
+	
+
+	@Transactional
+	@Override
+	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message) {
+		return employeeDao.sendEmail(recepients, bccRecepients, subject, message);
+	}
+	
+	
+	
+	//Timesheet
+	
+	
 	
 	@Transactional
 	@Override
@@ -138,9 +146,195 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getAllTimeSheets();
 	}
 	
+	
 	@Transactional
 	@Override
-	public Boolean sendEmail(String[] recepients, String[] bccRecepients, String subject, String message) {
-		return employeeDao.sendEmail(recepients, bccRecepients, subject, message);
+	public List<DailyTimeSheet> getListDailyTimesheet() {
+		return employeeDao.getAllTimeSheetByDate();
 	}
+	
+	@Transactional
+	@Override
+	public List<TimeSheet> getTimeSheetList() {
+		return employeeDao.getAllTimeSheets();
+	}
+		
+	
+	
+	
+	TimeSheet timeSheet;
+
+	@Override
+	public int deleteTimeSheet(int srNo) {
+		int deletedid = employeeDao.deleteTimeSheet(srNo);
+		return deletedid;
+	}
+	
+	@Override
+	public int updateTimeSheet(TimeSheet timesheet) {
+		int updatedId = employeeDao.updateTimeSheet(timesheet);
+		return updatedId;
+	}
+	
+	@Override
+	public List<SumTimeSheet> getTotalTimesheetHours() {
+		return employeeDao.getTotalTimeSheetHours();
+	}
+	
+	@Override
+	public Boolean insertTimesheet(List<TimeSheet> tms) {
+		Boolean insertStatus = employeeDao.insertTimeSheet(tms);
+		return insertStatus;
+		
+	}
+	
+	@Transactional
+	@Override
+	public TimeSheet getTimeSheetDetails(int id) {
+		return employeeDao.getTimeSheetDetails(id);
+	}
+	
+	
+	//Employee Timesheet Object
+	
+
+
+	
+	@Transactional
+	@Override
+	public List<DailyEmployeeTimeSheet> getListDailyEmployeeTimesheet(Employee employee) {
+		return employeeDao.getAllEmployeeTimeSheetGroupByDate(employee);
+	}
+	
+	@Transactional
+	@Override
+	public List<EmployeeTimeSheet> getAllEmployeeTimesheet() {
+		return employeeDao.getAllEmployeeTimeSheet();
+	}
+	
+	@Transactional
+	@Override
+	public List<DailyEmployeeTimeSheet> getAllDailyEmployeeTimesheet() {
+		return employeeDao.getAllDailyTimeSheetGroupByEmployee();
+	}
+	
+	@Transactional
+	@Override
+	public String addEmployeeTimesheet(EmployeeTimeSheet employeetimesheet) {
+		employeeDao.addEmployeeTimesheet(employeetimesheet);		          
+		return employeetimesheet.getJobTitle();
+	}
+	
+
+
+	@Override
+	public EmployeeTimeSheet getEmployeeTimeSheetDetails(int empoyeetimesheetId) {
+		EmployeeTimeSheet emptimesheet = (EmployeeTimeSheet) employeeDao.getEmployeeTimeSheetDetails(empoyeetimesheetId);
+		return emptimesheet;
+	}
+	
+
+	@Override
+	public int updateEmployeeTimeSheet(EmployeeTimeSheet emptimesheet) {
+		int updatedId = employeeDao.updateEmployeeTimeSheet(emptimesheet);
+		return updatedId;
+	}
+	
+
+	
+	@Override
+	public int deleteEmployeeTimeSheet(int srNo) {
+		int deletedid = employeeDao.deleteEmployeeTimeSheet(srNo);
+		return deletedid;
+	}
+	
+	
+	@Transactional
+	@Override
+	public List<EmployeeTimeSheet> getListEmployeeTimesheet(Employee employee) {
+		return employeeDao.getAllTimeSheetByEmployee(employee);
+	}
+	
+	@Transactional
+	@Override
+	public List<EmployeeTimeSheet> getListEmployeeTimesheetByCurrentDate(Employee employee) {
+		return employeeDao.getAllEmployeeTimeSheetByCurrentDate(employee);
+	}
+	
+	
+	
+	@Override
+	public List<SumEmployeeTimeSheet> getEmployeeTotalTimesheetHours(Employee employee) {
+		return employeeDao.getEmployeeTotalTimeSheetHours(employee);
+	}
+
+	
+	@Override
+	public Boolean insertEmployeeTimesheet(List<EmployeeTimeSheet> tms) {
+		Boolean insertStatus = employeeDao.insertEmployeeTimeSheet(tms);
+		return insertStatus;
+		
+	}
+	
+	
+	
+	//Employee Objective
+	
+	
+	
+	@Override
+	public Boolean insertEmployeeObjective(List<EmployeeObjective> emp_objs) {
+		Boolean insertStatus = employeeDao.insertEmployeeObjective(emp_objs);
+		return insertStatus;
+	}
+	
+	
+	@Override
+	public int deleteEmployeeObjective(int id) {
+		return employeeDao.deleteEmployeeObjective(id);
+	}
+
+	@Override
+	public List<EmployeeObjective> getEmployeeObjectives(Employee employee) {
+		return employeeDao.getEmployeeObjectives(employee);
+	}
+
+	@Override
+	public int updateEmployeeObjective(EmployeeObjective emObj) {
+		return employeeDao.updateEmployeeObjective(emObj);
+	}
+	
+	
+	
+	
+	
+	@Override
+	public Boolean insertObjective(List<Objective> objs) {
+		Boolean insertStatus = employeeDao.insertObjective(objs);
+		return insertStatus;
+	}
+	
+
+	@Override
+	public int deleteObjective(int id) {
+		return employeeDao.deleteObjective(id);
+	}
+
+	@Override
+	public List<Objective> getObjectives() {
+		return employeeDao.getObjectives();
+	}
+
+	@Override
+	public int updateObjective(Objective obj) {
+		return employeeDao.updateObjective(obj);
+	}
+	
+	@Override
+	public EmployeeObjective getEmployeeObjectiveDetails(int empObjId) {
+		EmployeeObjective empObj = (EmployeeObjective) employeeDao.getEmployeeObjectiveDetails(empObjId);
+		return empObj;
+	}
+	
+	
 }

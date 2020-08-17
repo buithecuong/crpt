@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,34 +18,46 @@
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
 <style type="text/css">
-body {
-	padding-top: 4em;
-	font-family: Georgia, "Times New Roman", Times, serif;
-	color: purple;
-	background-color: yellow;
-	
-	}
-	div, p, th, td
-{
-    font-size: 14px;
-}
-table{
-      border: solid 1px #000000;
-       border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-      }
-      
-th
-{
-    background-color: blue;
-    color: white;
-    padding: 10px;
+Body {
+	font-family: Calibri, Helvetica, sans-serif;
+	background-color: white;
 }
 
-td
-{
-    padding: 5px;
+button {
+	background-color: #4CAF50;
+	width: 100%;
+	color: orange;
+	padding: 15px;
+	margin: 10px 0px;
+	border: none;
+	cursor: pointer;
+}
+
+form {
+	border: 3px solid #f1f1f1;
+}
+
+input[type=text] {
+	width: 100%;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+td {
+	margin: 8px 0;
+}
+
+button:hover {
+	opacity: 0.7;
+}
+
+.container {
+	padding: 25px;
+	background-color: lightblue;
+}
+
+table {
+	border: 1px solid black;
 }
 </style>
 </head>
@@ -61,14 +74,14 @@ td
 <div class="wrapper">
   <!-- Navbar -->
   <div id="header">
-    <jsp:include page="navBar.jsp"/>
+    
 </div>
  
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <div id="header">
-    <jsp:include page="sideBar.jsp"/>
+    
 </div>
 
   <!-- Content Wrapper. Contains page content -->
@@ -78,12 +91,12 @@ td
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT DailyTimesheet</h1>
+            <h1 class="m-0 text-dark">CRPT Timesheet</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">Daily TimeSheet</li>
+              <li class="breadcrumb-item active">TimeSheet</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -99,32 +112,39 @@ td
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daily Timesheet History</h3>
+                  <h3 class="card-title">Submit working hours/date</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
               <div class="card-body">
-                 <center><h1>List of Timesheet</h1></center>
-                   <table border=1 frame=void rules=rows class="table" style="width: 300px" align="center">
-                     <tr>
-                     <th> Order#</th>
-                       <th>Date</th>
-                       <th>Hours</th>                  
-                     </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
-                     <tr>
-                     
-                     <td width="60" align="center">${loop.index+1}</td>
-                       <td width="60" align="center">${record.date}</td>
-                       <td width="60" align="center">${record.hours}</td>
-                     </tr>
-                  </c:forEach>
-                </table>
-                <br>
-                   <br>   <br>   <br>   <br>   
-                <center>
-                    <a href="welcomeAdmin">HOME </a>
-                </center>
+                <%
+                    out.println("The timesheet for the day " + request.getParameter("day"));
+                %><br />
+
+                <form:form name="regForm"  method="post"
+                    action="addTimesheetRow" modelAttribute="timesheet">
+
+                    
+                    <table id="TimeSheet" width="350px" border="1">
+                        <tr>
+                            <th>Job_Title</th>
+                            <th>Hours</th>
+                            <th>Status</th>
+                            <th>Date</th>
+
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="jobTitle" id="jobTitle" /></td>
+                            <td><input type="number" name="hours" id="hours" /></td>
+                            <td><input type="text" name="status" id="status" /></td>
+                            <td><input type="text" name="date" id="date"
+                                value="<%=request.getParameter("day")%>" /></td>
+                        </tr>
+
+                    </table>
+                    <br />
+                    <input type="submit" value="addTimesheetRow" />
+                </form:form>
                </div>
             </div>
             <!-- /.card -->
@@ -151,7 +171,7 @@ td
 
   <!-- Main Footer -->
    <div id="header">
-    <jsp:include page="footer.jsp"/>
+   
 </div>
 </div>
 <!-- ./wrapper -->

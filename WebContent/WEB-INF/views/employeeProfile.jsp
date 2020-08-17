@@ -75,33 +75,42 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="d-flex">
-                  <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">50</span>
-                    <span>Work Over Time</span>
-                  </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 12.5%
-                    </span>
-                    <span class="text-muted">Since last week</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
+                <p>Employee: ${employee}</p>
+                <center><h2>EMPLOYEE DETAILS</h2></center>
 
-                <div class="position-relative mb-4">
-                  <canvas id="visitors-chart" height="200"></canvas>
-                </div>
+                <table align="center" border="1">
+                    <tr>
+                        <td>Welcome ${firstname}</td>
 
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This Week
-                  </span>
+                    </tr>
+                    <tr>
+                        <td>ID : ${employee.id}</td>
+                    </tr>
+                    <tr>
+                        <td>Name : ${employee.name}</td>
+                    </tr>
+                    <tr>
+                        <td>User Name : ${employee.username}</td>
+                    </tr>
+                    <tr>
+                        <td>Team : ${employee.team}</td>
+                    </tr>
+                    <tr>
+                        <td>Status : ${employee.status}</td>
+                    </tr>
 
-                  <span>
-                    <i class="fas fa-square text-gray"></i> Last Week
-                  </span>
-                </div>
+                    <tr>
+                    </tr>
+                </table>
+                
+            <br><br><br>v
+                <center>
+                    <a href="welcome">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="logout">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    <a href="datepicker">Daily Timesheet</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    
+                    
+                </center>
               </div>
             </div>
             <!-- /.card -->

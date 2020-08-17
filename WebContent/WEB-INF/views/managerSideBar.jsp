@@ -54,27 +54,6 @@
               </p>
             </a>
           </li>
-          
-          <li class="nav-header">User Input</li>
-          <li class="nav-item">
-            <a href="employeeObjectives" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Set Objectives
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="datepicker" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
-              <p>
-                Multi TimeSheets
-                <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
-              </p>
-            </a>
-          </li>
           <li class="nav-header">View</li>
           <li class="nav-item">
             <a href="viewEmployeeObjectiveList" class="nav-link">

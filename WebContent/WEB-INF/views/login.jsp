@@ -29,7 +29,7 @@
    </div>
    
    <div> 
-   <a href="register.html" class="button">Register</a>
+   <a href="register" class="button">Register</a>
    </div>
    <div> 
    <input type="submit" id="login" class="btn btn-primary btn-large btn-block" value="Login">

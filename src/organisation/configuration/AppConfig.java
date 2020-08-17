@@ -25,6 +25,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import organisation.model.Employee;
 import organisation.model.TimeSheet;
+import organisation.model.EmployeeTimeSheet;
+import organisation.model.Objective;
+import organisation.model.EmployeeObjective;
+
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -51,7 +55,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 	DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/project");
+		//dataSource.setUrl("jdbc:mysql://localhost:3306/");
 		dataSource.setUsername("cprt");
 		dataSource.setPassword("Asdf$1234");
 		//dataSource.setUrl("jdbc:mysql://localhost:3306/cprt?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
@@ -79,6 +83,9 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 		sessionBuilder.addAnnotatedClasses(Employee.class);
 		sessionBuilder.addAnnotatedClasses(TimeSheet.class);
+		sessionBuilder.addAnnotatedClasses(EmployeeTimeSheet.class);
+		sessionBuilder.addAnnotatedClasses(Objective.class);
+		sessionBuilder.addAnnotatedClasses(EmployeeObjective.class);
 		sessionBuilder.setProperty("hibernate.show_sql", "true");
 		sessionBuilder.setProperty("hibernate.hbm2ddl.auto", "update");
 		sessionBuilder.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");

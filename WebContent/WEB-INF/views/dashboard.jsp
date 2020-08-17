@@ -16,7 +16,45 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+window.onload = function() {
  
+var dps = [];
+<c:if test="${error == null}">
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "dark1", "dark2"
+	animationEnabled: true,
+	title: {
+		text: "Daily Timesheet Historical"
+	},
+	data: [{
+		type: "column",
+		dataPoints: dps
+	    
+	}]
+});
+</c:if>
+ 
+var xValue;
+var yValue;
+ 
+<c:forEach items="${dataPoints}" var="dataPoint">
+	yValue = parseInt("${dataPoint.hours}");
+	xValue = new Date("${dataPoint.date}");
+	xValue.setDate(xValue.getDate() + 1)
+	dps.push({
+		x : xValue,
+		y : yValue,
+	});		
+</c:forEach>	
+
+ 
+<c:if test="${error == null}">
+chart.render();
+</c:if>
+ 
+}
+</script>
 </head>
 <!--
 `body` tag options:
@@ -123,6 +161,7 @@
                   <thead>
                   <tr>
                     <th>srNo</th>
+                    <th>Username</th>
                     <th>Tasks</th>
                     <th>Hours</th>
                     <th>Status</th>
@@ -130,12 +169,13 @@
                   </tr>
                   </thead>
                   <tbody>
-                    <c:forEach items="${timesheetList}" var="record">
+                    <c:forEach items="${employeetimesheetList}" var="record">
                      <tr>
                        <td width="60" align="center">
                        <img src="dist/img/default-150x150.png" alt="Task 1" class="img-circle img-size-32 mr-2">
                        ${record.srNo}
                    </td>
+                   <td width="60" align="center">${record.employee.username}</td>
                    <td width="60" align="center">${record.jobTitle}</td>
                    <td width="60" align="center">${record.hours}</td>
                    <td width="60" align="center">${record.status}</td>
@@ -167,7 +207,7 @@
                 <div class="d-flex">
                   <p class="d-flex flex-column">
                     <span class="text-bold text-lg">${totalTimeSheetHours} hrs</span>
-                    <span>Working Hours Over Time</span>
+                    <span>Accumuate Active Working Hours</span>
                   </p>
                   <p class="ml-auto d-flex flex-column text-right">
                     <span class="text-success">

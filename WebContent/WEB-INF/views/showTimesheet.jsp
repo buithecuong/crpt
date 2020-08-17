@@ -121,7 +121,7 @@ td
                        <td width="60" align="center">${record.hours}</td>
                        <td width="60" align="center">${record.status}</td>
                        <td width="60" align="center">${record.date}</td>
-                       <td width="60" align="center"><a href="edit?id=${record.srNo}">Edit</a>/<a href="delete?id=${record.srNo}" onclick="return confirm('Do you really want to delete?')">Delete</a></td>
+                       <td width="60" align="center"><a href="editTimeSheet?id=${record.srNo}">Edit</a>/<a href="deleteTimeSheet?id=${record.srNo}" onclick="return confirm('Do you really want to delete?')">Delete</a></td>
                      </tr>
                   </c:forEach>
                 </table>

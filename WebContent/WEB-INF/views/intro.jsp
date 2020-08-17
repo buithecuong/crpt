@@ -16,37 +16,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	padding-top: 4em;
-	font-family: Georgia, "Times New Roman", Times, serif;
-	color: purple;
-	background-color: yellow;
-	
-	}
-	div, p, th, td
-{
-    font-size: 14px;
-}
-table{
-      border: solid 1px #000000;
-       border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-      }
-      
-th
-{
-    background-color: blue;
-    color: white;
-    padding: 10px;
-}
 
-td
-{
-    padding: 5px;
-}
-</style>
 </head>
 <!--
 `body` tag options:
@@ -104,12 +74,11 @@ td
                 </div>
               </div>
               <div class="card-body">
-                <p>Employee: ${employee}</p>
                 <center><h2>EMPLOYEE DETAILS</h2></center>
 
                 <table align="center" border="1">
                     <tr>
-                        <td>Welcome ${firstname}</td>
+                        <td>Welcome ${employee.name}</td>
 
                     </tr>
                     <tr>

@@ -157,7 +157,7 @@ table {
 
 	<form:form name="regForm"
 		onSubmit="timeSheetRecords('TimeSheet')" method="post"
-		action="save" modelAttribute="timeSheetForm">
+		action="saveEmployeeTimeSheet" modelAttribute="timeSheetForm">
 
 		<input type="button" value="Add Row" onclick="addRow('TimeSheet')" />
 

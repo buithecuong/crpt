@@ -109,14 +109,15 @@ td
                      <tr>
                      <th> Order#</th>
                        <th>Date</th>
-                       <th>Hours</th>                  
+                       <th>Hours</th>
+                      <th>Username</th>                  
                      </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
+                     <c:forEach items="${dailyemployeetimesheetList}" var="record" varStatus="loop">
                      <tr>
-                     
                      <td width="60" align="center">${loop.index+1}</td>
                        <td width="60" align="center">${record.date}</td>
                        <td width="60" align="center">${record.hours}</td>
+                      <td width="60" align="center">${record.employee.username}</td>
                      </tr>
                   </c:forEach>
                 </table>
@@ -125,6 +126,8 @@ td
                 <center>
                     <a href="welcomeAdmin">HOME </a>
                 </center>
+                
+                
                </div>
             </div>
             <!-- /.card -->

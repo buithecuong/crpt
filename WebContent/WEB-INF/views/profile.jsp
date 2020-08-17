@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CRPT | TIMESHEET</title>
+  <title>CRPT | EMPLOYEE</title>
  
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,37 +16,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link href="<c:url value="/resources/css/adminlte.min.css" />" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	padding-top: 4em;
-	font-family: Georgia, "Times New Roman", Times, serif;
-	color: purple;
-	background-color: yellow;
-	
-	}
-	div, p, th, td
-{
-    font-size: 14px;
-}
-table{
-      border: solid 1px #000000;
-       border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-      }
-      
-th
-{
-    background-color: blue;
-    color: white;
-    padding: 10px;
-}
 
-td
-{
-    padding: 5px;
-}
-</style>
 </head>
 <!--
 `body` tag options:
@@ -78,12 +48,12 @@ td
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT DailyTimesheet</h1>
+            <h1 class="m-0 text-dark">CRPT Timesheet</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">Daily TimeSheet</li>
+              <li class="breadcrumb-item active">EMPLOYEE DETAILS</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -99,31 +69,42 @@ td
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daily Timesheet History</h3>
+                  <h3 class="card-title">EMPLOYEE DETAILS</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
               <div class="card-body">
-                 <center><h1>List of Timesheet</h1></center>
-                   <table border=1 frame=void rules=rows class="table" style="width: 300px" align="center">
-                     <tr>
-                     <th> Order#</th>
-                       <th>Date</th>
-                       <th>Hours</th>                  
-                     </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
-                     <tr>
-                     
-                     <td width="60" align="center">${loop.index+1}</td>
-                       <td width="60" align="center">${record.date}</td>
-                       <td width="60" align="center">${record.hours}</td>
-                     </tr>
-                  </c:forEach>
+                <center><h2>EMPLOYEE DETAILS</h2></center>
+
+                <table align="center" border="1">
+                    <tr>
+                        <td>Welcome ${employee.name}</td>
+
+                    </tr>
+                    <tr>
+                        <td>ID : ${employee.id}</td>
+                    </tr>
+                    <tr>
+                        <td>Name : ${employee.name}</td>
+                    </tr>
+                    <tr>
+                        <td>User Name : ${employee.username}</td>
+                    </tr>
+                    <tr>
+                        <td>Team : ${employee.team}</td>
+                    </tr>
+                    <tr>
+                        <td>Status : ${employee.status}</td>
+                    </tr>
+
+                    <tr>
+                    </tr>
                 </table>
-                <br>
-                   <br>   <br>   <br>   <br>   
+                
+            <br><br><br>v
                 <center>
-                    <a href="welcomeAdmin">HOME </a>
+                    <a href="edit?id=${employee.id}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    
                 </center>
                </div>
             </div>
@@ -131,7 +112,6 @@ td
 
             
           </div>
-          
           <!-- /.col-md-6 -->
           <!-- /.col-md-6 -->
         </div>

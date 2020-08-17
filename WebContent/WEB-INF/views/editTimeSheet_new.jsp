@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CRPT | TIMESHEET</title>
+  <title>CRPT | EMPLOYEE</title>
  
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -78,12 +78,12 @@ td
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">CRPT DailyTimesheet</h1>
+            <h1 class="m-0 text-dark">CRPT Employee</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="adminIntro">Home</a></li>
-              <li class="breadcrumb-item active">Daily TimeSheet</li>
+              <li class="breadcrumb-item active">Employee</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -99,39 +99,42 @@ td
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daily Timesheet History</h3>
+                  <h3 class="card-title">TimeSheet Edit</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
               <div class="card-body">
-                 <center><h1>List of Timesheet</h1></center>
-                   <table border=1 frame=void rules=rows class="table" style="width: 300px" align="center">
-                     <tr>
-                     <th> Order#</th>
-                       <th>Date</th>
-                       <th>Hours</th>                  
-                     </tr>
-                     <c:forEach items="${dailytimesheetList}" var="record" varStatus="loop">
-                     <tr>
-                     
-                     <td width="60" align="center">${loop.index+1}</td>
-                       <td width="60" align="center">${record.date}</td>
-                       <td width="60" align="center">${record.hours}</td>
-                     </tr>
-                  </c:forEach>
+                <p>TimeSheet record Id: ${timesheet.srNo}</p>
+                <center><h1>Edit Employee</h1></center>
+
+                <form:form method="POST" modelAttribute="timesheet" action="updateTimeSheet">
+                
+                 <table id="TimeSheet" width="350px" border="1">
+                    <table align= "center">
+                    
+                    <tr>
+                        <th>Job_Title</th>
+                        <th>Hours</th>
+                        <th>Status</th>
+                        <th>Date</th>
+
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="jobTitle" id="jobTitle" value="${timesheet.jobTitle}"/></td>
+                        <td><input type="number" name="hours" id="hours" value="${timesheet.hours}"/></td>
+                        <td><input type="text" name="status" id="status" value="${timesheet.status}"/></td>
+                        <td><input type="text" name="date" id="date"    value="${timesheet.date}" /></td>
+                    </tr>
                 </table>
-                <br>
-                   <br>   <br>   <br>   <br>   
-                <center>
-                    <a href="welcomeAdmin">HOME </a>
-                </center>
+                        <br />
+                        <input type="submit" value="Update" />
+                </form:form>
                </div>
             </div>
             <!-- /.card -->
 
             
           </div>
-          
           <!-- /.col-md-6 -->
           <!-- /.col-md-6 -->
         </div>

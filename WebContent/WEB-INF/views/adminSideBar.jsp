@@ -11,10 +11,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="${pageContext.request.contextPath}/resources/images/user.png" class="img-circle elevation-2" alt="User Image">
+          <img src="${pageContext.request.contextPath}/resources/images/user.pnp" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="profile" class="d-block">${employee.getName()}</a>
+          <a href="intro" class="d-block">${employee.getName()} (Admin)</a>
         </div>
       </div>
 
@@ -55,54 +55,18 @@
             </a>
           </li>
           
-          <li class="nav-header">User Input</li>
+          <li class="nav-header">Admin</li>
           <li class="nav-item">
-            <a href="employeeObjectives" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Set Objectives
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="datepicker" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
-              <p>
-                Multi TimeSheets
-                <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-header">View</li>
-          <li class="nav-item">
-            <a href="viewEmployeeObjectiveList" class="nav-link">
+            <a href="list" class="nav-link">
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>
-                Objective List
+                List Employees
                 <span class="badge badge-info right">2</span>
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="viewEmployeeTimesheetList" class="nav-link">
-              <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">TimeSheet List</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="viewAllEmployeeTimesheet" class="nav-link">
-              <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">All Employee TimeSheet List</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="viewAllDailyEmployeeTimesheetList" class="nav-link">
-              <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">All Employee Daily TimeSheet List</p>
-            </a>
-          </li>
+          
+          
           <li class="nav-header">Contact</li>
           <li class="nav-item">
             <a href="contact" class="nav-link">
